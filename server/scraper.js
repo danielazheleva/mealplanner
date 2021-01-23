@@ -21,7 +21,7 @@ async function scrapeRecipe(url) {
 
     await browser.close();
 
-    console.log({ recipeName, servings, ingredients, macros});
+    return {recipeName, servings, ingredients, macros};
 
 }
 
