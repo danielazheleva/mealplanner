@@ -5,10 +5,10 @@ const bodyParser = require('body-parser');
 const scrapers = require('./scraper');
 
 app.use(bodyParser.json());
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*"); // disabled for security on local
-    res.header("Access-Control-Allow-Headers", "Content-Type");
-    next();
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); // disabled for security on local
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
 });
 
 app.get('/', (req, res) => {
@@ -16,14 +16,17 @@ app.get('/', (req, res) => {
 })
 
 app.post('/recipe', async (req, res) => {
-    console.log("Scraping Recipe: " + req.body.urlValue);
-    const scrapedData = await scrapers.scrapeRecipe(req.body.urlValue);
-    console.log(scrapedData)
-    
-    // TODO - add to database
+  console.log(req.body);
 
-    res.send('success');
-  })
+  // This scrapes each recipe in the list
+  for(let url of req.body.urls) {
+    console.log("Scraping Recipe: " + url);
+    const scrapedData = await scrapers.scrapeRecipe(url);
+    console.log(scrapedData)
+  };
+
+  res.send('success');
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
