@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>Weekly Meal Planner</h1>
+        
+        <div>
+            <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Breakfast</th>
+                    <th>Lunch</th>
+                    <th>Dinner</th>
+                    <th>Snack</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Monday</td>
+                    <td><div>
+                        <input class="meal1-input" type="text" placeholder="Trial input box"/>
+                        <button type="submit" onClick="submitMeal()">submit</button>
+                    </div></td>
+                    <td><div>
+                        <input class="meal1-input" type="text" placeholder="Trial input box"/>
+                        <button type="submit" onClick="submitMeal()">submit</button>
+                    </div></td>
+                    <td><div>
+                        <input class="meal1-input" type="text" placeholder="Trial input box"/>
+                        <button type="submit" onClick="submitMeal()">submit</button>
+                    </div></td>
+                    <td><div>
+                        <input class="meal1-input" type="text" placeholder="Trial input box"/>
+                        <button type="submit" onClick="submitMeal()">submit</button>
+                    </div></td>
+                  </tr>
+                  <tr>
+                    <td>Tuesday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Wednesday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Thursday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Friday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Saturday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Sunday</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+                </table>
+        </div>
+
+        
+        
+        
+        <div class="container"></div>
+
+        <script>
+            function newEl(type, attrs={}) {
+                const el = document.createElement(type);
+                for(let attr in attrs) {
+                    const value = attrs[attr];
+                    if (attr == 'innerText') el.innertText = value;
+                    else el.setAttribute(attr, vlue);
+                }
+            return el;
+            }
+            
+            function createWeekForm() {
+                const days = [
+                    "monday",
+                    "tuesday",
+                    "wednesday",
+                    "thursday",
+                    "friday",
+                    "saturday",
+                    "sunday"
+                ]
+            }
+
+        </script>
+        <style></style>
+    </body>
+</html>
