@@ -19,7 +19,6 @@ async function scrapeRecipe(url) {
         return(td.innerText)
     } ));  
 
-
     await browser.close();
 
     console.log({ recipeName, servings, ingredients, macros});
@@ -27,4 +26,6 @@ async function scrapeRecipe(url) {
 }
 
 
-scrapeRecipe('https://www.bbcgoodfood.com/recipes/chocolate-chip-muffins');
+module.exports = {
+    scrapeRecipe
+}
