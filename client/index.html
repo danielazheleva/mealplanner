@@ -11,14 +11,9 @@
       <input class="recipe5" type="text" placeholder="Recipe 5" />
 
       <button type="submit" onClick="submitMeals()">Submit Recipes</button>
-      <button type="submit" onClick="showShoppingList()">
-        View Shopping List
-      </button>
     </div>
 
-    <div class="container">
-      <p><span id="shoppingList"></span></p>
-    </div>
+    <div class="container"><ul id="shoppingList"></ul></div>
 
     <script>
       function newEl(type, attrs = {}) {
@@ -31,11 +26,17 @@
         return el;
       }
 
-      function showShoppingList() {
-        fetch("http://localhost:3000/recipe");
+      function showShoppingList(ingredients) {
+        const shopListUl = document.getElementById("shoppingList");
+
+        ingredients.forEach(ing => {
+          const ingredientLi = document.createElement('li')
+          ingredientLi.innerText = ing;
+          shopListUl.append(ingredientLi);
+        });
       }
 
-      function submitMeals() {
+      async function submitMeals() {
         let urls = [];
         const url1 = document.querySelector(".recipe1").value;
         const url2 = document.querySelector(".recipe2").value;
@@ -44,20 +45,16 @@
         const url5 = document.querySelector(".recipe5").value;
 
         urls.push(url1, url2, url3, url4, url5);
-
-        fetch("http://localhost:3000/recipe", {
+        
+        jsonS = fetch("http://localhost:3000/recipe", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ urls }),
         })
-          .then(function (response) {
-            return response.json();
-          })
-          .then(function (myJson) {
-            console.log(JSON.stringify(myJson));
-          });
+          .then(response => response.json())
+          .then(ingredients => showShoppingList(ingredients));
       }
     </script>
     <style></style>
