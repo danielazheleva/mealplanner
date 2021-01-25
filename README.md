@@ -18,5 +18,6 @@
 - [ ] Calculate if recipe needs to be multiplied (up or down) based on recipe serving vs user need
 - [ ] Calculate new amount of ingredients per recipe (for those that need to be multiplied)
 - [ ] Combine ingredients list for weekly shopping list
+- [ ] Display shopping list in UI
 - [ ] How to set each recipe per meal?
 - [ ] Calculate daily macros once you know which recipes are on which day

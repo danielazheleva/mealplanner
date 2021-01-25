@@ -18,15 +18,40 @@ app.get('/', (req, res) => {
 app.post('/recipe', async (req, res) => {
   console.log(req.body);
 
-  // This scrapes each recipe in the list
-  for(let url of req.body.urls) {
-    console.log("Scraping Recipe: " + url);
-    const scrapedData = await scrapers.scrapeRecipe(url);
-    console.log(scrapedData)
+  let allRecipes =  [];
+  
+  // This scrapes each recipe in the list and combines the info in one big list 
+  for (let url of req.body.urls) {
+    if (url != null && url != "") {
+      const scrapedRecipe = await scrapeRecipe(url);
+      allRecipes.push(scrapedRecipe);
+    } else {
+      console.log("url empty");
+    }
   };
 
+
+  //Get list of all ingredients in all recipes
+  const allIngredients = getShoppingList(allRecipes);
+
+  console.log(allIngredients);
   res.send('success');
 })
+
+
+function getShoppingList(allRecipes){
+    return allIngredients = allRecipes.map(function(rec) {
+        return rec['ingredients'];
+    })
+    .reduce((r, arr) => r.concat(arr), []);
+
+}
+
+async function scrapeRecipe(url) {
+  console.log("Scraping Recipe: " + url);
+  const recipe = await scrapers.scrapeRecipe(url);
+  return recipe;
+}
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
