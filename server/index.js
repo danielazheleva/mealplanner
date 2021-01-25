@@ -11,8 +11,8 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+app.get('/recipe', (req, res) => {
+  return ('Hello World!');
 })
 
 app.post('/recipe', async (req, res) => {
@@ -29,13 +29,9 @@ app.post('/recipe', async (req, res) => {
       console.log("url empty");
     }
   };
-
-
   //Get list of all ingredients in all recipes
   const allIngredients = getShoppingList(allRecipes);
-
-  console.log(allIngredients);
-  res.send('success');
+  res.send(JSON.stringify(allIngredients));
 })
 
 

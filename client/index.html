@@ -3,17 +3,22 @@
   <head> </head>
   <body>
     <h1>Weekly Meal Planner</h1>
-    <div>
-      <input class="recipe1" type="text" placeholder="Recipe 1" />
+    <div class="container">
+      <input class="recipe1" id="test" type="text" placeholder="Recipe 1" />
       <input class="recipe2" type="text" placeholder="Recipe 2" />
       <input class="recipe3" type="text" placeholder="Recipe 3" />
       <input class="recipe4" type="text" placeholder="Recipe 4" />
       <input class="recipe5" type="text" placeholder="Recipe 5" />
 
-      <button type="submit" onClick="submitMeals()">submit</button>
+      <button type="submit" onClick="submitMeals()">Submit Recipes</button>
+      <button type="submit" onClick="showShoppingList()">
+        View Shopping List
+      </button>
     </div>
 
-    <div class="container"></div>
+    <div class="container">
+      <p><span id="shoppingList"></span></p>
+    </div>
 
     <script>
       function newEl(type, attrs = {}) {
@@ -24,6 +29,10 @@
           else el.setAttribute(attr, vlue);
         }
         return el;
+      }
+
+      function showShoppingList() {
+        fetch("http://localhost:3000/recipe");
       }
 
       function submitMeals() {
@@ -42,7 +51,13 @@
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ urls }),
-        });
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (myJson) {
+            console.log(JSON.stringify(myJson));
+          });
       }
     </script>
     <style></style>
