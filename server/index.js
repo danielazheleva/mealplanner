@@ -29,11 +29,47 @@ app.post('/recipe', async (req, res) => {
       console.log("url empty");
     }
   };
+
   //Get list of all ingredients in all recipes
   const allIngredients = getShoppingList(allRecipes);
+
+  reduceShoppingList(allIngredients);
+
   res.send(JSON.stringify(allIngredients));
 })
 
+// input: list of all ingredients from allrecipes
+function reduceShoppingList(allIngredients) {
+  // map list into map of ingredient: amount
+  const mapOfIngs = allIngredients.map(ingredient => {
+    if(ingredient.includes(",")) ingredient = ingredient.split(',')[0];
+    ingredient.trim();
+    return ingredient;
+  }).map((ingredient) => {
+    // Find ingredient quantity 
+    const amount = parseFloat(ingredient.match(/[\d\.]+/)) // 100
+
+    if (amount == NaN || amount == "") return ({key: ingredient, value: "not found"})
+  
+    if (ingredient.charAt((ingredient.lastIndexOf(amount)) + amount.toString().length) != ' ') {
+      ingredient = 
+        ingredient.substring(0, ingredient.lastIndexOf(amount) + amount.toString().length) 
+        + " " 
+        + ingredient.substring(ingredient.lastIndexOf(amount) + amount.toString().length);
+    }
+    
+
+    
+    return ({
+    key: ingredient.split(amount.toString()),
+    value: amount.toString()
+    })
+  });
+
+  console.log(mapOfIngs);
+// if 2 ingredients have the same word, then combine
+
+}
 
 function getShoppingList(allRecipes){
     return allIngredients = allRecipes.map(function(rec) {

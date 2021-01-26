@@ -26,6 +26,7 @@
         return el;
       }
 
+      // Display shopping list in UI 
       function showShoppingList(ingredients) {
         const shopListUl = document.getElementById("shoppingList");
 
@@ -46,6 +47,7 @@
 
         urls.push(url1, url2, url3, url4, url5);
         
+        // Get scraped recipe data from recipe using server api
         jsonS = fetch("http://localhost:3000/recipe", {
           method: "POST",
           headers: {
