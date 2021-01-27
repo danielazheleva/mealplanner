@@ -29,10 +29,12 @@
       // Display shopping list in UI 
       function showShoppingList(ingredients) {
         const shopListUl = document.getElementById("shoppingList");
+        
+        console.log(ingredients); 
 
         ingredients.forEach(ing => {
           const ingredientLi = document.createElement('li')
-          ingredientLi.innerText = ing;
+          ingredientLi.innerText = ing.value + ": " + ing.key;
           shopListUl.append(ingredientLi);
         });
       }
