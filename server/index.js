@@ -46,19 +46,20 @@ function reduceShoppingList(allIngredients) {
     // Find ingredient quantity amount (e.g. 100g floud = 100)
 
     let amount = parseFloat(ing.match(/[\d\.]+/)) 
+    const indexAfterAmountNum = ing.search(amount) + amount.toString().length;
 
     // Some ingredients have a space between amount and unit, while some don't
     // This normallises the text to be in the format of "<AMOUNT> <UNIT> <INGREDIENT>"
-    if (ing.charAt((ing.lastIndexOf(amount)) + amount.toString().length) != ' ') {
+    if (ing.charAt(indexAfterAmountNum) != ' ') {
       ing = 
-        ing.substring(0, ing.lastIndexOf(amount) + amount.toString().length) 
+        ing.substring(0, indexAfterAmountNum) 
         + " " 
-        + ing.substring(ing.lastIndexOf(amount) + amount.toString().length);
+        + ing.substring(indexAfterAmountNum);
     }
     
     // This finds index of the second empty space after the amount 
     // Which is the first empty space after tha unit e.g. ("100 g flour")
-    var index = ing.indexOf(' ', (ing.search(amount) + ((amount.toString().length)+1))); 
+    var index = ing.indexOf(' ', (indexAfterAmountNum+1)); 
 
     // If there is no second space, then the ingredient has no units (e.g. "2 eggs")
     // So we have to use the first space after the amount number
