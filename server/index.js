@@ -45,24 +45,26 @@ function reduceShoppingList(allIngredients) {
     if(ingredient.includes(",")) ingredient = ingredient.split(',')[0];
     ingredient.trim();
     return ingredient;
-  }).map((ingredient) => {
+  }).map((ing) => {
     // Find ingredient quantity 
-    const amount = parseFloat(ingredient.match(/[\d\.]+/)) // 100
+    let amount = parseFloat(ing.match(/[\d\.]+/)) // 100
 
-    if (amount == NaN || amount == "") return ({key: ingredient, value: "not found"})
+    if (amount == NaN || amount == "") return ({key: ing, value: "not found"})
   
-    if (ingredient.charAt((ingredient.lastIndexOf(amount)) + amount.toString().length) != ' ') {
-      ingredient = 
-        ingredient.substring(0, ingredient.lastIndexOf(amount) + amount.toString().length) 
+    if (ing.charAt((ing.lastIndexOf(amount)) + amount.toString().length) != ' ') {
+      ing = 
+        ing.substring(0, ing.lastIndexOf(amount) + amount.toString().length) 
         + " " 
-        + ingredient.substring(ingredient.lastIndexOf(amount) + amount.toString().length);
+        + ing.substring(ing.lastIndexOf(amount) + amount.toString().length);
     }
     
-
-    
+    var index = ing.indexOf(' ', ing.search(amount) + amount.toString().length+1 );
+    var amountWithUnit = ing.substr( 0, index );
+    var ingredient = ing.substr( index + 1 );
+        
     return ({
-    key: ingredient.split(amount.toString()),
-    value: amount.toString()
+    key: ingredient,
+    value: amountWithUnit
     })
   });
 
