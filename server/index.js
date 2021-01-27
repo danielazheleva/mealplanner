@@ -32,8 +32,6 @@ app.post('/recipe', async (req, res) => {
 
   //Get list of all ingredients in all recipes
   const allIngredients = getShoppingList(allRecipes);
-
-  reduceShoppingList(allIngredients);
   res.send(JSON.stringify(allIngredients));
 })
 
@@ -46,7 +44,6 @@ function reduceShoppingList(allIngredients) {
     return ingredient;
   }).map((ing) => {
     // Find ingredient quantity amount (e.g. 100g floud = 100)
-    console.log(ing)
 
     let amount = parseFloat(ing.match(/[\d\.]+/)) 
 
@@ -76,7 +73,6 @@ function reduceShoppingList(allIngredients) {
     })
   });
 
-  console.log(mapOfIngs);
   return mapOfIngs;
 
   // if 2 ingredients have the same word, then combine
@@ -84,11 +80,12 @@ function reduceShoppingList(allIngredients) {
 }
 
 function getShoppingList(allRecipes){
-    return allIngredientsList = allRecipes.map(function(rec) {
+    const allIngredientsList = allRecipes.map(function(rec) {
         return rec['ingredients'];
     })
     .reduce((r, arr) => r.concat(arr), []);
 
+    return reduceShoppingList(allIngredientsList);
 }
 
 async function scrapeRecipe(url) {
