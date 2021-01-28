@@ -34,7 +34,7 @@
 
         ingredients.forEach(ing => {
           const ingredientLi = document.createElement('li')
-          ingredientLi.innerText = ing.value + ": " + ing.key;
+          ing.unit == undefined ? ingredientLi.innerText = ing.value + " " + ing.key : ingredientLi.innerText = ing.value + " " + ing.unit + " " + ing.key;
           shopListUl.append(ingredientLi);
         });
       }

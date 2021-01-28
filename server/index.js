@@ -70,14 +70,40 @@ function reduceShoppingList(allIngredients) {
 
     return ({
     key: ingredient,
-    value: amountWithUnit
+    value: amount,
+    unit: amountWithUnit.split(" ")[1]
     })
   });
 
+  console.log(mapOfIngs);
   return mapOfIngs;
 
   // if 2 ingredients have the same word, then combine
 
+}
+
+function combineDuplicates(arrayOfObjects){
+  
+  var combined = [];
+
+  arrayOfObjects.forEach(obj => {
+
+    if(combined.some(combinedObj => combinedObj.key == obj.key)) {
+      combined.forEach(finalIng => {
+        if( (finalIng.key == obj.key) && (finalIng.unit == obj.unit ) ) {
+          finalIng.value += obj.value;
+        }
+      })
+    } else {
+      combined.push(obj);
+    }
+  });
+
+  console.log("===== final objects  =====")
+  console.log(combined)
+
+  return combined;
+  
 }
 
 function getShoppingList(allRecipes){
@@ -86,7 +112,8 @@ function getShoppingList(allRecipes){
     })
     .reduce((r, arr) => r.concat(arr), []);
 
-    return reduceShoppingList(allIngredientsList);
+    const allList = reduceShoppingList(allIngredientsList);
+    return combineDuplicates(allList);
 }
 
 async function scrapeRecipe(url) {
