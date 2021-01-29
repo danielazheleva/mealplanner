@@ -22,13 +22,19 @@ app.post('/recipe', async (req, res) => {
   
   // This scrapes each recipe in the list and combines the info in one big list 
   for (let url of req.body.urls) {
-    if (url != null && url != "") {
-      const scrapedRecipe = await scrapeRecipe(url);
-      allRecipes.push(scrapedRecipe);
+    if (url.url != null && url.url != "" ) {
+      const scrapedRecipe = await scrapeRecipe(url.url);
+      url.url = scrapedRecipe;
+      allRecipes.push(url);
     } else {
       console.log("url empty");
     }
   };
+
+  console.log("== allRecipes ==")
+  
+  // TODO - work out how many multiples of recipe is required before combining ingredients into one list
+
 
   //Get list of all ingredients in all recipes
   const allIngredients = getShoppingList(allRecipes);
@@ -36,15 +42,14 @@ app.post('/recipe', async (req, res) => {
 })
 
 // input: list of all ingredients from allrecipes
-function reduceShoppingList(allIngredients) {
+function reduceShoppingList(allIngredientsMap) {
   // map list into map of ingredient: amount
-  const mapOfIngs = allIngredients.map(ingredient => {
-    if(ingredient.includes(",")) ingredient = ingredient.split(',')[0];
-    ingredient.trim();
+  const mapOfIngs = allIngredientsMap.map(ingredient => {
+    if(ingredient.key.includes(",")) ingredient.key = ingredient.key.split(',')[0];
+    ingredient.key.trim();
     return ingredient;
   }).map((ing) => {
     // Find ingredient quantity amount (e.g. 100g floud = 100)
-
     let amount = parseFloat(ing.match(/[\d\.]+/)) 
     const indexAfterAmountNum = ing.search(amount) + amount.toString().length;
 
@@ -75,7 +80,6 @@ function reduceShoppingList(allIngredients) {
     })
   });
 
-  console.log(mapOfIngs);
   return mapOfIngs;
 
   // if 2 ingredients have the same word, then combine

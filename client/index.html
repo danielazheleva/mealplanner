@@ -4,11 +4,16 @@
   <body>
     <h1>Weekly Meal Planner</h1>
     <div class="container">
-      <input class="recipe1" id="test" type="text" placeholder="Recipe 1" />
-      <input class="recipe2" type="text" placeholder="Recipe 2" />
-      <input class="recipe3" type="text" placeholder="Recipe 3" />
-      <input class="recipe4" type="text" placeholder="Recipe 4" />
-      <input class="recipe5" type="text" placeholder="Recipe 5" />
+      <div class="row"><input class="recipe1" type="text" placeholder="Recipe 1" /> <input class="amount1" id="amount" type="text" placeholder="Number of meals" />  </div>
+      <div class="row"><input class="recipe2" type="text" placeholder="Recipe 2" /> <input class="amount2" id="amount" type="text" placeholder="Number of meals" /></div>
+      <div class="row"><input class="recipe3" type="text" placeholder="Recipe 3" /> <input class="amount3" id="amount" type="text" placeholder="Number of meals" /></div>
+      <div class="row"><input class="recipe4" type="text" placeholder="Recipe 4" /> <input class="amount4" id="amount" type="text" placeholder="Number of meals" /></div>
+      <div class="row"><input class="recipe5" type="text" placeholder="Recipe 5" /> <input class="amount5" id="amount" type="text" placeholder="Number of meals" /></div>
+      
+      
+      
+      
+      
 
       <button type="submit" onClick="submitMeals()">Submit Recipes</button>
     </div>
@@ -41,11 +46,11 @@
 
       async function submitMeals() {
         let urls = [];
-        const url1 = document.querySelector(".recipe1").value;
-        const url2 = document.querySelector(".recipe2").value;
-        const url3 = document.querySelector(".recipe3").value;
-        const url4 = document.querySelector(".recipe4").value;
-        const url5 = document.querySelector(".recipe5").value;
+        const url1 = { url: document.querySelector(".recipe1").value, amount: document.querySelector(".amount1").value }
+        const url2 = { url: document.querySelector(".recipe2").value, amount: document.querySelector(".amount2").value }
+        const url3 = { url: document.querySelector(".recipe3").value, amount: document.querySelector(".amount3").value }
+        const url4 = { url: document.querySelector(".recipe4").value, amount: document.querySelector(".amount4").value }
+        const url5 = { url: document.querySelector(".recipe5").value, amount: document.querySelector(".amount5").value }
 
         urls.push(url1, url2, url3, url4, url5);
         
