@@ -15,6 +15,30 @@ app.get('/recipe', (req, res) => {
   return ('Hello World!');
 })
 
+// FINAL JSON TO RETURN TO US
+// {
+//   "recipes": [
+//     {
+//       "recipe_name": "abc",
+//       "servings": 2,
+//       "macros_per_servinc": [
+//         {
+//           "protein": 45,
+//           "carbs": 32,
+//           "fats": 4
+//         }
+//       ]
+//     }
+//   ],
+//   "shopping_list": [
+//   {
+//     "ingredient": "",
+//     "amount": 45,
+//     "unit": "g"
+//   }
+//   ]
+// }
+
 app.post('/recipe', async (req, res) => {
   console.log(req.body);
 
