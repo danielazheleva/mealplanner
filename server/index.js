@@ -22,10 +22,9 @@ app.post('/recipe', async (req, res) => {
   
   // This scrapes each recipe in the list and combines the info in one big list 
   for (let url of req.body.urls) {
-    if (url.url != null && url.url != "" ) {
+    if (url.url != null && url.url != "") {
       const scrapedRecipe = await scrapeRecipe(url.url);
-      url.url = scrapedRecipe;
-      allRecipes.push(url);
+      allRecipes.push(scrapedRecipe);
     } else {
       console.log("url empty");
     }
@@ -42,11 +41,11 @@ app.post('/recipe', async (req, res) => {
 })
 
 // input: list of all ingredients from allrecipes
-function reduceShoppingList(allIngredientsMap) {
+function reduceShoppingList(allIngredients) {
   // map list into map of ingredient: amount
-  const mapOfIngs = allIngredientsMap.map(ingredient => {
-    if(ingredient.key.includes(",")) ingredient.key = ingredient.key.split(',')[0];
-    ingredient.key.trim();
+  const mapOfIngs = allIngredients.map(ingredient => {
+    if(ingredient.includes(",")) ingredient = ingredient.split(',')[0];
+    ingredient.trim();
     return ingredient;
   }).map((ing) => {
     // Find ingredient quantity amount (e.g. 100g floud = 100)
@@ -74,7 +73,7 @@ function reduceShoppingList(allIngredientsMap) {
     var ingredient = ing.substr( index + 1 );
 
     return ({
-    key: ingredient,
+    key: ingredient.trim(),
     value: amount,
     unit: amountWithUnit.split(" ")[1]
     })
