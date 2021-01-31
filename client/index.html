@@ -10,15 +10,11 @@
       <div class="row"><input class="recipe4" type="text" placeholder="Recipe 4" /></div>
       <div class="row"><input class="recipe5" type="text" placeholder="Recipe 5" /></div>
       
-      
-      
-      
-      
-
       <button type="submit" onClick="submitMeals()">Submit Recipes</button>
     </div>
 
     <div class="container"><ul id="shoppingList"></ul></div>
+    <div class="container"><div id="allRecipes"></div></div>
 
     <script>
       function newEl(type, attrs = {}) {
@@ -34,14 +30,23 @@
       // Display shopping list in UI 
       function showShoppingList(ingredients) {
         const shopListUl = document.getElementById("shoppingList");
-        
-        console.log(ingredients); 
-
+      
         ingredients.forEach(ing => {
-          const ingredientLi = document.createElement('li')
+          const ingredientLi = document.createElement('li');
           ing.unit == undefined ? ingredientLi.innerText = ing.value + " " + ing.key : ingredientLi.innerText = ing.value + " " + ing.unit + " " + ing.key;
           shopListUl.append(ingredientLi);
         });
+      }
+
+      function showAllOptions(recipes) {
+        const allRecipes = document.getElementById("allRecipes");
+
+        recipes.forEach(recipe => {
+          const recipeList = document.createElement('p');
+          recipeList.innerText = recipe.recipeName + " - " + recipe.servings;
+          allRecipes.append(recipeList);
+        })
+
       }
 
       async function submitMeals() {
@@ -63,7 +68,10 @@
           body: JSON.stringify({ urls }),
         })
           .then(response => response.json())
-          .then(ingredients => showShoppingList(ingredients));
+          .then(response => {
+            showAllOptions(response.recipes);
+            showShoppingList(response.ingredients); 
+          });
       }
     </script>
     <style></style>

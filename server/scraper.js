@@ -9,7 +9,8 @@ async function scrapeRecipe(url) {
     const recipeName = await (await el1.getProperty('textContent')).jsonValue();
 
     const [el2] = await page.$x('//*[@id="__next"]/div[4]/main/div/section/div/div[3]/ul[2]/li[3]/div/div[2]');
-    const servings = await (await el2.getProperty('textContent')).jsonValue();
+    const servingsText = await (await el2.getProperty('textContent')).jsonValue();
+    let servings = parseFloat(servingsText.match(/[\d\.]+/)) 
 
     const ingredients = await page.$$eval('.recipe__ingredients section ul li', lis => lis.map((li) => {
         return(li.innerText);
@@ -19,9 +20,21 @@ async function scrapeRecipe(url) {
         return(td.innerText)
     } ));  
 
-    await browser.close();
+    const wantedMacros = ['kcal', 'carbs', 'fat', 'protein'];
+    const formattedMacros = [];
 
-    return {recipeName, servings, ingredients, macros};
+    for(let i=0; i<macros.length; i++){
+        if(wantedMacros.includes(macros[i])){
+            const map = {
+                key: macros[i].trim(),
+                value: parseFloat(macros[i+1])
+            };
+            formattedMacros.push(map);
+        }
+    }
+
+    await browser.close();
+    return {recipeName, servings, ingredients, formattedMacros};
 
 }
 
