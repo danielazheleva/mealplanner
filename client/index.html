@@ -4,12 +4,21 @@
   <body>
     <h1>Weekly Meal Planner</h1>
     <div class="container">
-      <div class="row"><input class="recipe1" type="text" placeholder="Recipe 1" /></div>
-      <div class="row"><input class="recipe2" type="text" placeholder="Recipe 2" /></div>
-      <div class="row"><input class="recipe3" type="text" placeholder="Recipe 3" /></div>
-      <div class="row"><input class="recipe4" type="text" placeholder="Recipe 4" /></div>
-      <div class="row"><input class="recipe5" type="text" placeholder="Recipe 5" /></div>
-      
+      <div class="row">
+        <input class="recipe1" type="text" placeholder="Recipe 1" />
+      </div>
+      <div class="row">
+        <input class="recipe2" type="text" placeholder="Recipe 2" />
+      </div>
+      <div class="row">
+        <input class="recipe3" type="text" placeholder="Recipe 3" />
+      </div>
+      <div class="row">
+        <input class="recipe4" type="text" placeholder="Recipe 4" />
+      </div>
+      <div class="row">
+        <input class="recipe5" type="text" placeholder="Recipe 5" />
+      </div>
       <button type="submit" onClick="submitMeals()">Submit Recipes</button>
     </div>
 
@@ -21,19 +30,22 @@
         const el = document.createElement(type);
         for (let attr in attrs) {
           const value = attrs[attr];
-          if (attr == "innerText") el.innertText = value;
-          else el.setAttribute(attr, vlue);
+          if (attr == "innerText") el.innerText = value;
+          else el.setAttribute(attr, value);
         }
         return el;
       }
 
-      // Display shopping list in UI 
+      // Display shopping list in UI
       function showShoppingList(ingredients) {
         const shopListUl = document.getElementById("shoppingList");
-      
-        ingredients.forEach(ing => {
-          const ingredientLi = document.createElement('li');
-          ing.unit == undefined ? ingredientLi.innerText = ing.value + " " + ing.key : ingredientLi.innerText = ing.value + " " + ing.unit + " " + ing.key;
+
+        ingredients.forEach((ing) => {
+          const ingredientLi = document.createElement("li");
+          ing.unit == undefined
+            ? (ingredientLi.innerText = ing.value + " " + ing.key)
+            : (ingredientLi.innerText =
+                ing.value + " " + ing.unit + " " + ing.key);
           shopListUl.append(ingredientLi);
         });
       }
@@ -41,24 +53,28 @@
       function showAllOptions(recipes) {
         const allRecipes = document.getElementById("allRecipes");
 
-        recipes.forEach(recipe => {
-          const recipeList = document.createElement('p');
-          recipeList.innerText = recipe.recipeName + " - " + recipe.servings;
-          allRecipes.append(recipeList);
-        })
-
+        recipes.forEach((recipe) => {
+          console.log(recipe);
+          for (let i = 0; i < recipe.servings; i++) {
+            console.log(recipe.recipeName);
+            const card = newEl("div", { class: "card" });
+            const title = newEl("h4", { innerText: recipe.recipeName });
+            card.appendChild(title);
+            allRecipes.appendChild(card);
+          }
+        });
       }
 
       async function submitMeals() {
         let urls = [];
-        const url1 = {url: document.querySelector(".recipe1").value}
-        const url2 = {url: document.querySelector(".recipe2").value}
-        const url3 = {url: document.querySelector(".recipe3").value}
-        const url4 = {url: document.querySelector(".recipe4").value}
-        const url5 = {url: document.querySelector(".recipe5").value}
+        const url1 = { url: document.querySelector(".recipe1").value };
+        const url2 = { url: document.querySelector(".recipe2").value };
+        const url3 = { url: document.querySelector(".recipe3").value };
+        const url4 = { url: document.querySelector(".recipe4").value };
+        const url5 = { url: document.querySelector(".recipe5").value };
 
         urls.push(url1, url2, url3, url4, url5);
-        
+
         // Get scraped recipe data from recipe using server api
         jsonS = fetch("http://localhost:3000/recipe", {
           method: "POST",
@@ -67,10 +83,10 @@
           },
           body: JSON.stringify({ urls }),
         })
-          .then(response => response.json())
-          .then(response => {
+          .then((response) => response.json())
+          .then((response) => {
             showAllOptions(response.recipes);
-            showShoppingList(response.ingredients); 
+            showShoppingList(response.ingredients);
           });
       }
     </script>
