@@ -145,7 +145,7 @@
           const value = attrs[attr];
           if (attr == "innerText") {
             el.innerText = value;
-            el.id = "testId";
+            el.id = Math.random();
             el.setAttribute("draggable", "true");
             el.setAttribute("ondragstart", "onDragStart(event)");
           } else el.setAttribute(attr, value);
