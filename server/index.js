@@ -21,7 +21,7 @@ app.get('/recipe', (req, res) => {
 //     {
 //       "recipe_name": "abc",
 //       "servings": 2,
-//       "macros_per_servinc": [
+//       "macros_per_serving": [
 //         {
 //           "protein": 45,
 //           "carbs": 32,
