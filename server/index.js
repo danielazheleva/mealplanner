@@ -15,6 +15,30 @@ app.get('/recipe', (req, res) => {
   return ('Hello World!');
 })
 
+// FINAL JSON TO RETURN TO US
+// {
+//   "recipes": [
+//     {
+//       "recipe_name": "abc",
+//       "servings": 2,
+//       "macros_per_serving": [
+//         {
+//           "protein": 45,
+//           "carbs": 32,
+//           "fats": 4
+//         }
+//       ]
+//     }
+//   ],
+//   "shopping_list": [
+//      {
+//        "ingredient": "",
+//        "amount": 45,
+//        "unit": "g"
+//      }
+//   ]
+// }
+
 app.post('/recipe', async (req, res) => {
   console.log(req.body);
 
@@ -28,22 +52,35 @@ app.post('/recipe', async (req, res) => {
     } else {
       console.log("url empty");
     }
-  };
-
-  console.log("== allRecipes ==")
-  
+  };  
   // TODO - work out how many multiples of recipe is required before combining ingredients into one list
 
-
   //Get list of all ingredients in all recipes
+  const allRecipesWithServingSizeAndMacros = formatRecipe(allRecipes);
   const allIngredients = getShoppingList(allRecipes);
-  res.send(JSON.stringify(allIngredients));
+  res.send(JSON.stringify({recipes: allRecipesWithServingSizeAndMacros, ingredients: allIngredients}));
 })
 
-// input: list of all ingredients from allrecipes
-function reduceShoppingList(allIngredients) {
+// input: list of all recipes, containing all information
+function formatRecipe(allRecipes) {
+  const wantedKeys = ['recipeName', 'servings', 'formattedMacros']
+  const output = [];
+  
+  allRecipes.forEach(recipe => {
+    const filtered = Object.keys(recipe).filter(key => wantedKeys.includes(key))
+                                        .reduce((obj, key) => {
+                                          obj[key] = recipe[key];
+                                          return obj;
+                                        }, {});
+    output.push(filtered)
+  })
+  return output;
+}
+
+// input: list of all recipes, containing all information
+function reduceShoppingList(allRecipes) {
   // map list into map of ingredient: amount
-  const mapOfIngs = allIngredients.map(ingredient => {
+  const mapOfIngs = allRecipes.map(ingredient => {
     if(ingredient.includes(",")) ingredient = ingredient.split(',')[0];
     ingredient.trim();
     return ingredient;
@@ -102,8 +139,8 @@ function combineDuplicates(arrayOfObjects){
     }
   });
 
-  console.log("===== final objects  =====")
-  console.log(combined)
+  // console.log("===== final objects  =====")
+  // console.log(combined)
 
   return combined;
   
