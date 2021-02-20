@@ -23,6 +23,7 @@ function onDragOver(event) {
 }
 
 async function combineMacros(day, prt, crb, fat, kcal) {
+    console.log(crb)
 
   const proteinDestination = document.getElementById(day + "-prt");
   const carbsDestination = document.getElementById(day + "-crb");
@@ -30,21 +31,20 @@ async function combineMacros(day, prt, crb, fat, kcal) {
   const kcalDestination = document.getElementById(day + "-cal");
 
   const proteinCurrentValue = proteinDestination.innerText;
+  const carbCurrentValue = carbsDestination.innerText;
+  console.log("current Carb value: " + carbCurrentValue);
+  const fatCurrentValue = fatDestination.innerText;
+  const kcalCurrentValue = kcalDestination.innerText;
   console.log(proteinCurrentValue);
 
-  if (proteinCurrentValue === "") {
-    proteinDestination.innerText = prt.innerText;
-  } else {
-    console.log(
-      "adding " + proteinCurrentValue + " with " + prt.innerText
-    );
-    proteinDestination.innerText =
-      parseInt(proteinCurrentValue) + parseInt(prt.innerText);
-  }
+  proteinCurrentValue === "" ? proteinDestination.innerText = prt.innerText : proteinDestination.innerText = parseInt(proteinCurrentValue) + parseInt(prt.innerText);
+  carbCurrentValue === "" ? carbsDestination.innerText = crb.innerText : carbsDestination.innerText = parseInt(carbCurrentValue) + parseInt(crb.innerText);
+  fatCurrentValue === "" ? fatDestination.innerText = fat.innerText : fatDestination.innerText = parseInt(fatCurrentValue) + parseInt(fat.innerText);
+  kcalCurrentValue === "" ? kcalDestination.innerText = kcal.innerText : kcalDestination.innerText = parseInt(kcalCurrentValue) + parseInt(kcal.innerText);
+
 }
 
 function onDrop(event) {
-  event.currentTarget.style.backgroundColor = "white";
   const id = event.dataTransfer.getData("text");
   const draggableElement = document.getElementById(id);
 
@@ -53,7 +53,9 @@ function onDrop(event) {
 
   console.log("id is: " + id);
 
-  const title = draggableElement.getElementsByTagName("h5")[0];
+  const titleText = draggableElement.getElementsByTagName("h5")[0].innerText;
+  const title = document.createElement("p");
+  title.innerText = titleText; 
   const proteinFromRecipe = document.getElementById(id+"-protein");
   const carbsFromRecipe = document.getElementById(id+"-carbs");
   const fatFromRecipe = document.getElementById(id+"-fat");
@@ -61,6 +63,7 @@ function onDrop(event) {
   dropzone.appendChild(title);
 
   combineMacros(day, proteinFromRecipe, carbsFromRecipe, fatFromRecipe, kcalFromRecipe);
+  draggableElement.remove();
   event.dataTransfer.clearData();
 }
 
