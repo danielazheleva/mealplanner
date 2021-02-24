@@ -12,6 +12,7 @@ function newEl(type, attrs = {}) {
 
 window.onload = function() {
   generateTable();
+  createInputBox();
 };
 
 function onDragStart(event) {
@@ -73,6 +74,7 @@ function showShoppingList(ingredients) {
 
   ingredients.forEach((ing) => {
     const ingredientLi = document.createElement("li");
+    ingredientLi.classList.add("ingredient-item")
     ing.unit == undefined
       ? (ingredientLi.innerText = ing.value + " " + ing.key)
       : (ingredientLi.innerText =
@@ -120,14 +122,31 @@ function generateTable() {
   });
 }
 
+function createInputBox(){
+    const inputsClass = document.getElementsByClassName("recipe-inputs");
+    const inputsId = document.getElementById("recipe-inputs");
+    const nextInputValue = inputsClass[0].children.length +1;
+    const row = document.createElement("div")
+    row.classList.add("row");
+    const input = document.createElement("input")
+    input.classList.add("recipe-input");
+    input.id="recipe"+nextInputValue;
+    input.setAttribute("type","text");
+    input.setAttribute("placeholder","Input BBC GoodFood Recipe");
+
+    row.appendChild(input);
+    inputsId.appendChild(row);
+}
+
 function showAllOptions(recipes) {
   const allRecipes = document.getElementById("allRecipes");
 
   recipes.forEach((recipe) => {
-    console.log(recipe);
-
     for (let i = 0; i < recipe.servings; i++) {
       const id = Math.random();
+
+      const col=document.createElement("div");
+      col.classList.add("col-sm-6");
 
       console.log(recipe.recipeName);
       const card = newEl("div", { class: "card" });
@@ -159,24 +178,24 @@ function showAllOptions(recipes) {
       card.appendChild(table);
       card.id = id;
       card.classList.add("meal-option");
-      card.classList.add("col-sm-6");
       card.setAttribute("draggable", "true");
       card.setAttribute("ondragstart", "onDragStart(event)");
-
-      allRecipes.appendChild(card);
+      
+      col.appendChild(card);
+      allRecipes.appendChild(col);
     }
   });
 }
 
 async function submitMeals() {
   let urls = [];
-  const url1 = { url: document.querySelector(".recipe1").value };
-  const url2 = { url: document.querySelector(".recipe2").value };
-  const url3 = { url: document.querySelector(".recipe3").value };
-  const url4 = { url: document.querySelector(".recipe4").value };
-  const url5 = { url: document.querySelector(".recipe5").value };
+  
+  const recipeInputs = document.getElementsByClassName("recipe-input")
+  console.log(recipeInputs);
 
-  urls.push(url1, url2, url3, url4, url5);
+  for(let recipe of recipeInputs) {
+      urls.push({ url: recipe.value })
+  };
 
   // Get scraped recipe data from recipe using server api
   jsonS = fetch("http://localhost:3000/recipe", {

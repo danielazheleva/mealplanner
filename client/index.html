@@ -9,40 +9,24 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
   </head>
   <body>
-    <h1>Weekly Meal Planner</h1>
-    <div class="container recipe-inputs">
-      <div class="row">
-        <input
-          class="recipe1"
-          type="text"
-          placeholder="Recipe 1"
-          value="https://www.bbcgoodfood.com/recipes/moroccan-freekeh-traybake"
-        />
+    <h1 class="page-title">Weekly Meal Planner</h1>
+    <div class="container recipe-inputs" id="recipe-inputs">
       </div>
-      <div class="row">
-        <input class="recipe2" type="text" placeholder="Recipe 2" />
+      
+      <div class="container buttons">
+        <button type="submit" type="button" class="btn btn-secondary" onClick="createInputBox()">Add Another</button>
+        <button type="submit" type="button" class="btn btn-secondary" onClick="submitMeals()">Submit Recipes</button>
       </div>
-      <div class="row">
-        <input class="recipe3" type="text" placeholder="Recipe 3" />
-      </div>
-      <div class="row">
-        <input class="recipe4" type="text" placeholder="Recipe 4" />
-      </div>
-      <div class="row">
-        <input class="recipe5" type="text" placeholder="Recipe 5" />
-      </div>
-      <button type="submit" type="button" class="btn btn-secondary" onClick="submitMeals()">Submit Recipes</button>
-      <!-- <button type="submit" onClick="moveElement()">Move Element</button> -->
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-sm">
-          <div class="card-deck" id="allRecipes"></div>
+        <div class="col-sm-6">
+          <div class="row" id="allRecipes"></div>
         </div>
-        <div class="col-sm">
+        <div class="col-sm-6">
           <div class="container" id="week-table">
-            <table class="table table-light">
+            <table class="table table-light week-table">
               <thead>
                 <tr>
                   <th></th>
@@ -63,11 +47,16 @@
         </div>
       </div> 
     </div>
-    
-    
       
     </div>
-    <div class="container"><ul id="shoppingList"></ul></div>
+    <div class="container shopping-list">
+      <div class="row">
+        <h5>Shopping List</h5>
+      </div>
+      <div class="row">
+        <ul id="shoppingList"></ul>
+        </div>
+    </div>
 
     
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -82,6 +71,27 @@
         margin: 20px;
         padding: 20px;
       }
+      .page-title {
+        text-align: center;
+      }
+      .ingredient-item {
+        list-style-type: none;
+      }
+      .shopping-list {
+        text-align: center;
+      }
+      .week-table {
+        height: 27rem;
+      } 
+      .buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn {
+        margin: 0.5%;
+      }
+
     </style>
   </body>
 </html>
