@@ -21,5 +21,5 @@
 - [ ] Work out how to add tests
 - [x] Combine ingredients list for weekly shopping list
 - [x] Display shopping list in UI
-- [ ] How to set each recipe per meal?
-- [ ] Calculate daily macros once you know which recipes are on which day
+- [x] How to set each recipe per meal?
+- [x] Calculate daily macros once you know which recipes are on which day
