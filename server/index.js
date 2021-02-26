@@ -81,8 +81,7 @@ function formatRecipe(allRecipes) {
 function reduceShoppingList(allRecipes) {
   // map list into map of ingredient: amount
   const mapOfIngs = allRecipes.map(ingredient => {
-    if(ingredient.includes(",")) ingredient = ingredient.split(',')[0];
-    ingredient.trim();
+    if(ingredient.includes(",")) ingredient = (ingredient.split(',')[0]).trim();
     return ingredient;
   }).map((ing) => {
     // Find ingredient quantity amount (e.g. 100g floud = 100)
