@@ -198,7 +198,7 @@ async function submitMeals() {
   };
 
   // Get scraped recipe data from recipe using server api
-  jsonS = fetch("http://localhost:3000/recipe", {
+  jsonS = fetch("http://localhost:3000/api/recipe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

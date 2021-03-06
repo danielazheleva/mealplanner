@@ -1,0 +1,30 @@
+name: Deploy API
+
+on:
+  push:
+    branches:
+      - deploy
+    paths:
+      - 'server/*'
+
+env:
+  NODE_ENV: production
+
+jobs:
+  deploy_app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+          
+      - name: deploy 
+        run: |-
+          gcloud app deploy server/api.yml
+          gcloud app deploy dispatch.yaml
