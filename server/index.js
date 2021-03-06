@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
-const scrapers = require('./scraper');
+const scrapers = require('./services/scraper');
 
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
@@ -11,35 +11,12 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/recipe', (req, res) => {
+app.get('/api/recipe', (req, res) => {
+  console.log("Hello World!!")
   return ('Hello World!');
 })
 
-// FINAL JSON TO RETURN TO US
-// {
-//   "recipes": [
-//     {
-//       "recipe_name": "abc",
-//       "servings": 2,
-//       "macros_per_serving": [
-//         {
-//           "protein": 45,
-//           "carbs": 32,
-//           "fats": 4
-//         }
-//       ]
-//     }
-//   ],
-//   "shopping_list": [
-//      {
-//        "ingredient": "",
-//        "amount": 45,
-//        "unit": "g"
-//      }
-//   ]
-// }
-
-app.post('/recipe', async (req, res) => {
+app.post('/api/recipe', async (req, res) => {
   console.log(req.body);
 
   let allRecipes =  [];
@@ -48,6 +25,7 @@ app.post('/recipe', async (req, res) => {
   for (let url of req.body.urls) {
     if (url.url != null && url.url != "") {
       const scrapedRecipe = await scrapeRecipe(url.url);
+      console.log(scrapedRecipe)
       allRecipes.push(scrapedRecipe);
     } else {
       console.log("url empty");
@@ -58,7 +36,9 @@ app.post('/recipe', async (req, res) => {
   //Get list of all ingredients in all recipes
   const allRecipesWithServingSizeAndMacros = formatRecipe(allRecipes);
   const allIngredients = getShoppingList(allRecipes);
-  res.send(JSON.stringify({recipes: allRecipesWithServingSizeAndMacros, ingredients: allIngredients}));
+  res.status(200)
+    .send(JSON.stringify({recipes: allRecipesWithServingSizeAndMacros, ingredients: allIngredients}))
+    .end();
 })
 
 // input: list of all recipes, containing all information
@@ -138,11 +118,7 @@ function combineDuplicates(arrayOfObjects){
     }
   });
 
-  // console.log("===== final objects  =====")
-  // console.log(combined)
-
   return combined;
-  
 }
 
 function getShoppingList(allRecipes){
@@ -162,5 +138,5 @@ async function scrapeRecipe(url) {
 }
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Meal Planner API listening at ${port}`)
 })

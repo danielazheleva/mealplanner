@@ -1,7 +1,8 @@
 const puppeteer = require('puppeteer');
 
 async function scrapeRecipe(url) {
-    const browser = await puppeteer.launch();
+    console.log("in scraper");
+    const browser = await puppeteer.launch({args: ['--no-sandbox']});
     const page = await browser.newPage();
     await page.goto(url);
 
@@ -34,6 +35,7 @@ async function scrapeRecipe(url) {
     }
 
     await browser.close();
+    console.log(recipeName, servings, ingredients, formattedMacros);
     return {recipeName, servings, ingredients, formattedMacros};
 
 }

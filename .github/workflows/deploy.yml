@@ -1,0 +1,15 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - deploy
+
+env:
+  NODE_ENV: production
+
+jobs:
+  deploy_app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy 
