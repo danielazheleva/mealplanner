@@ -1,0 +1,35 @@
+.card-holder {
+    display: flex;
+    background-color: yellow;
+}
+
+.meal-option {
+    margin: 20px;
+    padding: 20px;
+}
+
+.page-title {
+    text-align: center;
+}
+
+.ingredient-item {
+    list-style-type: none;
+}
+
+.shopping-list {
+    text-align: center;
+}
+
+.week-table {
+    height: 27rem;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn {
+    margin: 0.5%;
+}
