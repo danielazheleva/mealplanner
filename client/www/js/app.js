@@ -70,7 +70,7 @@ function onDrop(event) {
 
 // Display shopping list in UI
 function showShoppingList(ingredients) {
-  const shopListUl = document.getElementById("shoppingList");
+  const shopListUl = getShoppingListBox();
 
   ingredients.forEach((ing) => {
     const ingredientLi = document.createElement("li");
@@ -108,6 +108,7 @@ function generateTable() {
     const meals = ["breakfast", "lunch", "dinner","snack", "prt", "crb", "fat", "cal"];
 
     for (let i = 0; i < mealElements.length ; i++) {
+      mealElements[i].classList.add("tablecell");
       const element = mealElements[i];
       element.id = day + "-" + meals[i];
 
@@ -138,7 +139,7 @@ function createInputBox(){
     inputsId.appendChild(row);
 }
 
-function showAllOptions(recipes) {
+function displayRecipes(recipes) {
   const allRecipes = document.getElementById("allRecipes");
 
   recipes.forEach((recipe) => {
@@ -187,7 +188,32 @@ function showAllOptions(recipes) {
   });
 }
 
+function clearExistingDetails() {
+  const shoppingListBox = getShoppingListBox();
+  const recipeOutputBox = document.getElementById("allRecipes");
+  const tableCells = document.getElementsByClassName("tablecell");
+  console.log(tableCells);
+
+  for(let i=0; i < tableCells.length; i++){
+    tableCells[i].innerHTML = '';
+  }
+
+  recipeOutputBox.innerHTML = '';
+  shoppingListBox.innerHTML = '';
+}
+
+function showLoader(){
+  const spinner = document.getElementById("spinner");
+  spinner.style.display = 'block';
+}
+
 async function submitMeals() {
+  // show loader
+  document.getElementById("spinner").style.display = 'block';
+
+  // clear existing details
+  clearExistingDetails();
+
   let urls = [];
   
   const recipeInputs = document.getElementsByClassName("recipe-input")
@@ -198,7 +224,7 @@ async function submitMeals() {
   };
 
   // Get scraped recipe data from recipe using server api
-  jsonS = fetch("/api/recipe", {
+  jsonS = fetch("http://localhost:3000/api/recipe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -207,7 +233,16 @@ async function submitMeals() {
   })
     .then((response) => response.json())
     .then((response) => {
-      showAllOptions(response.recipes);
+      displayRecipes(response.recipes);
       showShoppingList(response.ingredients);
+      document.getElementById("spinner").style.display = 'none';
     });
+}
+
+function getShoppingListBox(){
+  return document.getElementById("shoppingList");;
+}
+
+function getAllRecipesBox(){
+  return document.getElementById("allRecipes");
 }
