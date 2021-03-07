@@ -23,5 +23,5 @@
 - [ ] Work out how to add tests
 - [ ] Calculate if recipe needs to be multiplied (up or down) based on recipe serving vs user need
 - [ ] Calculate new amount of ingredients per recipe (for those that need to be multiplied)
-- [ ] Add loading icon while scraper is working 
-- [ ] Refresh list of recipes after multiple submits
+- [x] Add loading icon while scraper is working 
+- [x] Refresh list of recipes after multiple submits

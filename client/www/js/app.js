@@ -24,8 +24,6 @@ function onDragOver(event) {
 }
 
 async function combineMacros(day, prt, crb, fat, kcal) {
-    console.log(crb)
-
   const proteinDestination = document.getElementById(day + "-prt");
   const carbsDestination = document.getElementById(day + "-crb");
   const fatDestination = document.getElementById(day + "-fat");
@@ -33,10 +31,8 @@ async function combineMacros(day, prt, crb, fat, kcal) {
 
   const proteinCurrentValue = proteinDestination.innerText;
   const carbCurrentValue = carbsDestination.innerText;
-  console.log("current Carb value: " + carbCurrentValue);
   const fatCurrentValue = fatDestination.innerText;
   const kcalCurrentValue = kcalDestination.innerText;
-  console.log(proteinCurrentValue);
 
   proteinCurrentValue === "" ? proteinDestination.innerText = prt.innerText : proteinDestination.innerText = parseInt(proteinCurrentValue) + parseInt(prt.innerText);
   carbCurrentValue === "" ? carbsDestination.innerText = crb.innerText : carbsDestination.innerText = parseInt(carbCurrentValue) + parseInt(crb.innerText);
@@ -51,8 +47,6 @@ function onDrop(event) {
 
   const dropzone = event.target;        
   const day = event.target.id.split("-")[0]; 
-
-  console.log("id is: " + id);
 
   const titleText = draggableElement.getElementsByTagName("h5")[0].innerText;
   const title = document.createElement("p");
@@ -83,9 +77,7 @@ function showShoppingList(ingredients) {
   });
 }
 
-function generateTable() {
-  console.log("generate table called");
-  
+function generateTable() {  
   const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
   const tableBody = document.getElementById("table-body");
 
@@ -149,7 +141,6 @@ function displayRecipes(recipes) {
       const col=document.createElement("div");
       col.classList.add("col-sm-6");
 
-      console.log(recipe.recipeName);
       const card = newEl("div", { class: "card" });
       const title = newEl("h5", { innerText: recipe.recipeName });
       title.classList.add("card-title");
@@ -192,7 +183,6 @@ function clearExistingDetails() {
   const shoppingListBox = getShoppingListBox();
   const recipeOutputBox = document.getElementById("allRecipes");
   const tableCells = document.getElementsByClassName("tablecell");
-  console.log(tableCells);
 
   for(let i=0; i < tableCells.length; i++){
     tableCells[i].innerHTML = '';
@@ -217,14 +207,13 @@ async function submitMeals() {
   let urls = [];
   
   const recipeInputs = document.getElementsByClassName("recipe-input")
-  console.log(recipeInputs);
 
   for(let recipe of recipeInputs) {
       urls.push({ url: recipe.value })
   };
 
   // Get scraped recipe data from recipe using server api
-  jsonS = fetch("http://localhost:3000/api/recipe", {
+  jsonS = fetch("/api/recipe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
