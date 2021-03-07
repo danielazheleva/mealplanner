@@ -5,7 +5,7 @@ on:
     branches:
       - deploy
     paths:
-      - 'server/*'
+      - 'server/**'
 
 env:
   NODE_ENV: production
