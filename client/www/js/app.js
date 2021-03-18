@@ -20,7 +20,7 @@ async function submitMeals() {
   };
 
   // Get scraped recipe data from recipe using server api
-  jsonS = fetch("/api/recipe", {
+  jsonS = fetch("http://localhost:3000/api/recipe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -76,10 +76,10 @@ function displayRecipes(recipes) {
       const id = Math.random();
 
       const col = document.createElement("div");
-      col.classList.add("col-sm-6");
+      col.classList.add("col-sm-3");
 
       const card = newEl("div", { class: "card" });
-      const title = newEl("h5", { innerText: recipe.recipeName });
+      const title = newEl("p", { innerText: recipe.recipeName });
       title.classList.add("card-title");
       card.appendChild(title);
 
