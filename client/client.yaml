@@ -9,3 +9,6 @@ handlers:
     - url: /(.*)
       static_files: www/\1
       upload: www/(.*)
+    - url: /favicon\.ico
+      static_files: images/favicon.ico
+      upload: images/favicon\.ico
