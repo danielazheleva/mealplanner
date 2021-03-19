@@ -29,4 +29,3 @@ jobs:
       - name: deploy 
         run: |-
           gcloud app deploy server/api.yml
-          gcloud app deploy dispatch.yaml
