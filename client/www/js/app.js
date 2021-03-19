@@ -6,9 +6,7 @@ window.onload = function () {
 };
 
 async function triggerMonitorCount() {
-  jsonS = fetch("/api/monitor", {
-    method: "GET"
-  })
+  fetch("/api/monitor");
 }
 
 async function submitMeals() {
