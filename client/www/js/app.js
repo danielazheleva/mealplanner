@@ -245,7 +245,7 @@ function createInputBox() {
   input.classList.add("recipe-input");
   input.id = "recipe" + nextInputValue;
   input.setAttribute("type", "text");
-  input.setAttribute("placeholder", "Input BBC GoodFood Recipe");
+  input.setAttribute("placeholder", "Input BBC GoodFood Recipe URL here");
 
   row.appendChild(input);
   inputsId.appendChild(row);
