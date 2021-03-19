@@ -15,54 +15,7 @@ app.use(function (req, res, next) {
 
 app.get('/api/monitor', (req, res) => {
   console.log("Creating Metric");
-  quickstart();
 })
-
-async function quickstart() {
-  // Your Google Cloud Platform project ID
-  const projectId = process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || 'YOUR_PROJECT_ID';
-
-  // Creates a client
-  const client = new monitoring.MetricServiceClient();
-
-  // Prepares an individual data point
-  const dataPoint = {
-    interval: {
-      endTime: {
-        seconds: Date.now() / 1000,
-      },
-    },
-    value: {
-      // Number of visitors
-      doubleValue: 1,
-    },
-  };
-
-  // Prepares the time series request
-  const request = {
-    name: client.projectPath(projectId),
-    timeSeries: [
-      {
-        // Ties the data point to a custom metric
-        metric: {
-          type: 'custom.googleapis.com/stores/daily_sales',
-          labels: {},
-        },
-        resource: {
-          type: 'global',
-          labels: {
-            project_id: projectId,
-          },
-        },
-        points: [dataPoint],
-      },
-    ],
-  };
-
-  // Writes time series data
-  const [result] = await client.createTimeSeries(request);
-  console.log('Done writing time series data.', result);
-}
 
 
 app.get('/api/recipe', (req, res) => {
