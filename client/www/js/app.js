@@ -4,6 +4,12 @@ window.onload = function () {
   createInputBox();
 };
 
+async function triggerMonitorCount() {
+  jsonS = fetch("/api/monitor", {
+    method: "GET"
+  })
+}
+
 async function submitMeals() {
   // show loader
   document.getElementById("spinner").style.display = 'block';

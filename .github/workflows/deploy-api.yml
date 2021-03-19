@@ -10,6 +10,7 @@ on:
 
 env:
   NODE_ENV: production
+  GCLOUD_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
 
 jobs:
   deploy_app:
