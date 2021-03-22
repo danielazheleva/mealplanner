@@ -49,13 +49,9 @@ async function createUserHitMetric() {
       type: 'custom.googleapis.com/users/daily_users',
     },
     resource: {
-      type: 'gae_instance',
+      type: 'global',
       labels: {
         project_id: projectId,
-        module_id:
-          version_id:
-        instance_id:
-          location:
       },
     },
     points: [dataPoint],
