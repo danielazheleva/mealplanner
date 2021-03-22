@@ -9,7 +9,7 @@ async function scrapeRecipe(url) {
     const [el1] = await page.$x('//*[@id="__next"]/div[4]/main/div/section/div/div[3]/h1');
     const recipeName = await (await el1.getProperty('textContent')).jsonValue();
 
-    const [el2] = await page.$x('//*[@id="__next"]/div[4]/main/div/section/div/div[3]/ul[2]/li[3]/div/div[2]');
+    const [el2] = await page.$x('//*[@id="__next"]/div[4]/main/div/section/div/div[3]/ul[1]/li[3]/div/div[2]');
     const servingsText = await (await el2.getProperty('textContent')).jsonValue();
     let servings = parseFloat(servingsText.match(/[\d\.]+/)) 
 
