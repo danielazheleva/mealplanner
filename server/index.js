@@ -24,7 +24,7 @@ app.get('/api/recipe', (req, res) => {
 })
 
 app.post('/api/recipe', async (req, res) => {
-  cgcpHelers.reateUserHitMetric('recipe_api');
+  gcpHelers.createUserHitMetric('recipe_api');
   console.log(req.body);
 
   let allRecipes = [];
