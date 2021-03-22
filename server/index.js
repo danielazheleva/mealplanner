@@ -33,7 +33,7 @@ async function createUserHitMetric() {
       },
     },
     value: {
-      doubleValue: 1,
+      doubleValue: 1.00,
     },
   };
   const timeSeriesData = {
