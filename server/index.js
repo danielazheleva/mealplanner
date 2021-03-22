@@ -1,10 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser');
 const scrapers = require('./services/scraper');
-const monitoring = require('@google-cloud/monitoring');
+const gcpHelers = require('./services/gcpHelpers')
 
-// Creates a Stackdriver client
-const client = new monitoring.MetricServiceClient();
 const app = express()
 const port = process.env.PORT || 3000;
 
@@ -17,44 +15,8 @@ app.use(function (req, res, next) {
 
 app.get('/api/monitor', (req, res) => {
   console.log("Creating Metric");
-  createUserHitMetric("home_page");
+  gcpHelers.createUserHitMetric('home_page');
 });
-
-async function createUserHitMetric(value) {
-  
-  const projectId = 'meal-planner-306012';
-  const dataPoint = {
-    interval: {
-      endTime: {
-        seconds: Date.now() / 1000,
-      },
-    },
-    value: {
-      doubleValue: 1.00,
-    },
-  };
-  const timeSeriesData = {
-    metric: {
-      type: 'custom.googleapis.com/userMetric/'+value,
-    },
-    resource: {
-      type: 'global',
-      labels: {
-        project_id: projectId,
-      },
-    },
-    points: [dataPoint],
-  };
-
-  const request = {
-    name: client.projectPath(projectId),
-    timeSeries: [timeSeriesData],
-  };
-  // Writes time series data
-  const result = await client.createTimeSeries(request);
-  console.log('Done writing time series data.', result);
-}
-
 
 app.get('/api/recipe', (req, res) => {
   console.log("Hello World!!")
@@ -62,7 +24,7 @@ app.get('/api/recipe', (req, res) => {
 })
 
 app.post('/api/recipe', async (req, res) => {
-  createUserHitMetric("recipe_api");
+  cgcpHelers.reateUserHitMetric('recipe_api');
   console.log(req.body);
 
   let allRecipes = [];
