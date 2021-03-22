@@ -6,7 +6,7 @@ window.onload = function () {
 };
 
 async function triggerMonitorCount() {
-  fetch("/api/monitor");
+  fetch("http://localhost:3000/api/monitor");
 }
 
 async function submitMeals() {

@@ -18,6 +18,10 @@ app.use(function (req, res, next) {
 
 app.get('/api/monitor', (req, res) => {
   console.log("Creating Metric");
+  createUserHitMetric();
+})
+
+async function createUserHitMetric() {
   /**
    * TODO(developer): Uncomment and edit the following lines of code.
    */
@@ -52,9 +56,7 @@ app.get('/api/monitor', (req, res) => {
   // Writes time series data
   const result = await client.createTimeSeries(request);
   console.log('Done writing time series data.', result);
-})
-
-
+}
 
 
 app.get('/api/recipe', (req, res) => {
