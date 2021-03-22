@@ -26,10 +26,9 @@ app.get('/api/monitor', (req, res) => {
 async function createUserHitMetric() {
   const isAvailable = await gcpMetadata.isAvailable();
 
-  when(isAvailable) {
-    const data = await gcpMetadata.instance();
-    console.log(data); // ... All metadata properties
-  }
+  const data = await gcpMetadata.instance();
+  console.log(data); // ... All metadata properties
+  
 
   /**
    * TODO(developer): Uncomment and edit the following lines of code.
