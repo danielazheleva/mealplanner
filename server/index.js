@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const scrapers = require('./services/scraper');
 const monitoring = require('@google-cloud/monitoring');
 
+// Creates a client
+const client = new monitoring.MetricServiceClient();
+
 const app = express()
 const port = process.env.PORT || 3000;
 
@@ -15,54 +18,43 @@ app.use(function (req, res, next) {
 
 app.get('/api/monitor', (req, res) => {
   console.log("Creating Metric");
-  // quickstart();
+  /**
+   * TODO(developer): Uncomment and edit the following lines of code.
+   */
+  const projectId = 'meal-planner-306012';
+  const dataPoint = {
+    interval: {
+      endTime: {
+        seconds: Date.now() / 1000,
+      },
+    },
+    value: {
+      doubleValue: 1,
+    },
+  };
+  const timeSeriesData = {
+    metric: {
+      type: 'custom.googleapis.com/users/daily_users',
+    },
+    resource: {
+      type: 'global',
+      labels: {
+        project_id: projectId,
+      },
+    },
+    points: [dataPoint],
+  };
+
+  const request = {
+    name: client.projectPath(projectId),
+    timeSeries: [timeSeriesData],
+  };
+  // Writes time series data
+  const result = await client.createTimeSeries(request);
+  console.log('Done writing time series data.', result);
 })
 
-// async function quickstart() {
-//   // Your Google Cloud Platform project ID
-//   const projectId = process.env.GCLOUD_PROJECT || process.env.GOOGLE_CLOUD_PROJECT || 'YOUR_PROJECT_ID';
 
-//   // Creates a client
-//   const client = new monitoring.MetricServiceClient();
-
-//   // Prepares an individual data point
-//   const dataPoint = {
-//     interval: {
-//       endTime: {
-//         seconds: Date.now() / 1000,
-//       },
-//     },
-//     value: {
-//       // Number of visitors
-//       doubleValue: 1,
-//     },
-//   };
-
-//   // Prepares the time series request
-//   const request = {
-//     name: client.projectPath(projectId),
-//     timeSeries: [
-//       {
-//         // Ties the data point to a custom metric
-//         metric: {
-//           type: 'custom.googleapis.com/stores/daily_sales',
-//           labels: {},
-//         },
-//         resource: {
-//           type: 'global',
-//           labels: {
-//             project_id: projectId,
-//           },
-//         },
-//         points: [dataPoint],
-//       },
-//     ],
-//   };
-
-//   // Writes time series data
-//   const [result] = await client.createTimeSeries(request);
-//   console.log('Done writing time series data.', result);
-// }
 
 
 app.get('/api/recipe', (req, res) => {
@@ -73,8 +65,8 @@ app.get('/api/recipe', (req, res) => {
 app.post('/api/recipe', async (req, res) => {
   console.log(req.body);
 
-  let allRecipes =  [];
-  
+  let allRecipes = [];
+
   // This scrapes each recipe in the list and combines the info in one big list 
   for (let url of req.body.urls) {
     if (url.url != null && url.url != "") {
@@ -84,14 +76,14 @@ app.post('/api/recipe', async (req, res) => {
     } else {
       console.log("url empty");
     }
-  };  
+  };
   // TODO - work out how many multiples of recipe is required before combining ingredients into one list
 
   //Get list of all ingredients in all recipes
   const allRecipesWithServingSizeAndMacros = formatRecipe(allRecipes);
   const allIngredients = getShoppingList(allRecipes);
   res.status(200)
-    .send(JSON.stringify({recipes: allRecipesWithServingSizeAndMacros, ingredients: allIngredients}))
+    .send(JSON.stringify({ recipes: allRecipesWithServingSizeAndMacros, ingredients: allIngredients }))
     .end();
 })
 
@@ -99,13 +91,13 @@ app.post('/api/recipe', async (req, res) => {
 function formatRecipe(allRecipes) {
   const wantedKeys = ['recipeName', 'servings', 'formattedMacros']
   const output = [];
-  
+
   allRecipes.forEach(recipe => {
     const filtered = Object.keys(recipe).filter(key => wantedKeys.includes(key))
-                                        .reduce((obj, key) => {
-                                          obj[key] = recipe[key];
-                                          return obj;
-                                        }, {});
+      .reduce((obj, key) => {
+        obj[key] = recipe[key];
+        return obj;
+      }, {});
     output.push(filtered)
   })
   return output;
@@ -115,37 +107,37 @@ function formatRecipe(allRecipes) {
 function reduceShoppingList(allRecipes) {
   // map list into map of ingredient: amount
   const mapOfIngs = allRecipes.map(ingredient => {
-    if(ingredient.includes(",")) ingredient = (ingredient.split(',')[0]).trim();
+    if (ingredient.includes(",")) ingredient = (ingredient.split(',')[0]).trim();
     return ingredient;
   }).map((ing) => {
     // Find ingredient quantity amount (e.g. 100g floud = 100)
-    let amount = parseFloat(ing.match(/[\d\.]+/)) 
+    let amount = parseFloat(ing.match(/[\d\.]+/))
     const indexAfterAmountNum = ing.search(amount) + amount.toString().length;
 
     // Some ingredients have a space between amount and unit, while some don't
     // This normallises the text to be in the format of "<AMOUNT> <UNIT> <INGREDIENT>"
     if (ing.charAt(indexAfterAmountNum) != ' ') {
-      ing = 
-        ing.substring(0, indexAfterAmountNum) 
-        + " " 
+      ing =
+        ing.substring(0, indexAfterAmountNum)
+        + " "
         + ing.substring(indexAfterAmountNum);
     }
-    
+
     // This finds index of the second empty space after the amount 
     // Which is the first empty space after tha unit e.g. ("100 g flour")
-    var index = ing.indexOf(' ', (indexAfterAmountNum+1)); 
+    var index = ing.indexOf(' ', (indexAfterAmountNum + 1));
 
     // If there is no second space, then the ingredient has no units (e.g. "2 eggs")
     // So we have to use the first space after the amount number
-    if(index == -1 ) index = ing.indexOf(' ', (ing.search(amount))); 
+    if (index == -1) index = ing.indexOf(' ', (ing.search(amount)));
 
-    var amountWithUnit = ing.substr( 0, index );
-    var ingredient = ing.substr( index + 1 );
+    var amountWithUnit = ing.substr(0, index);
+    var ingredient = ing.substr(index + 1);
 
     return ({
-    key: ingredient.trim(),
-    value: amount,
-    unit: amountWithUnit.split(" ")[1]
+      key: ingredient.trim(),
+      value: amount,
+      unit: amountWithUnit.split(" ")[1]
     })
   });
 
@@ -155,15 +147,15 @@ function reduceShoppingList(allRecipes) {
 
 }
 
-function combineDuplicates(arrayOfObjects){
-  
+function combineDuplicates(arrayOfObjects) {
+
   var combined = [];
 
   arrayOfObjects.forEach(obj => {
 
-    if(combined.some(combinedObj => combinedObj.key == obj.key)) {
+    if (combined.some(combinedObj => combinedObj.key == obj.key)) {
       combined.forEach(finalIng => {
-        if( (finalIng.key == obj.key) && (finalIng.unit == obj.unit ) ) {
+        if ((finalIng.key == obj.key) && (finalIng.unit == obj.unit)) {
           finalIng.value += obj.value;
         }
       })
@@ -175,14 +167,14 @@ function combineDuplicates(arrayOfObjects){
   return combined;
 }
 
-function getShoppingList(allRecipes){
-    const allIngredientsList = allRecipes.map(function(rec) {
-        return rec['ingredients'];
-    })
+function getShoppingList(allRecipes) {
+  const allIngredientsList = allRecipes.map(function (rec) {
+    return rec['ingredients'];
+  })
     .reduce((r, arr) => r.concat(arr), []);
 
-    const allList = reduceShoppingList(allIngredientsList);
-    return combineDuplicates(allList);
+  const allList = reduceShoppingList(allIngredientsList);
+  return combineDuplicates(allList);
 }
 
 async function scrapeRecipe(url) {
