@@ -16,7 +16,7 @@ async function createUserHitMetric(value) {
             doubleValue: 1.00,
         },
     };
-    const metricType = 'custom.googleapis.com/userMetric/' + value;
+    const metricType = 'custom.googleapis.com/users/' + value;
     console.log(metricType)
     const timeSeriesData = {
         metric: {
