@@ -2,6 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser');
 const scrapers = require('./services/scraper');
 const monitoring = require('@google-cloud/monitoring');
+const gcpMetadata = require('gcp-metadata');
+
 
 // Creates a client
 const client = new monitoring.MetricServiceClient();
@@ -22,6 +24,13 @@ app.get('/api/monitor', (req, res) => {
 });
 
 async function createUserHitMetric() {
+  const isAvailable = await gcpMetadata.isAvailable();
+
+  when(isAvailable) {
+    const data = await gcpMetadata.instance();
+    console.log(data); // ... All metadata properties
+  }
+
   /**
    * TODO(developer): Uncomment and edit the following lines of code.
    */
@@ -44,6 +53,10 @@ async function createUserHitMetric() {
       type: 'gae_instance',
       labels: {
         project_id: projectId,
+        module_id:
+          version_id:
+        instance_id:
+          location:
       },
     },
     points: [dataPoint],
