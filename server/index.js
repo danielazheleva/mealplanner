@@ -19,7 +19,7 @@ app.use(function (req, res, next) {
 app.get('/api/monitor', (req, res) => {
   console.log("Creating Metric");
   createUserHitMetric();
-})
+});
 
 async function createUserHitMetric() {
   /**
@@ -41,7 +41,7 @@ async function createUserHitMetric() {
       type: 'custom.googleapis.com/users/daily_users',
     },
     resource: {
-      type: 'global',
+      type: 'gae_instance',
       labels: {
         project_id: projectId,
       },
