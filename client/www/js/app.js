@@ -6,7 +6,7 @@ window.onload = function () {
 };
 
 async function triggerMonitorCount() {
-  fetch("api/monitor");
+  fetch("/api/monitor");
 }
 
 async function submitMeals() {
@@ -25,7 +25,7 @@ async function submitMeals() {
   };
 
   // Get scraped recipe data from recipe using server api
-  jsonS = fetch("http://localhost:3000/api/recipe", {
+  jsonS = fetch("/api/recipe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
