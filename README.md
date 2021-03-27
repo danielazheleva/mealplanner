@@ -19,9 +19,14 @@
 - [x] Calculate daily macros once you know which recipes are on which day
 - [x] Deploy to GCP 
 - [ ] Look at DNS name
-- [ ] Set up monitoring on GCP
+- [x] Set up monitoring on GCP
 - [ ] Work out how to add tests
-- [ ] Calculate if recipe needs to be multiplied (up or down) based on recipe serving vs user need
-- [ ] Calculate new amount of ingredients per recipe (for those that need to be multiplied)
+- [x] Calculate if recipe needs to be multiplied (up or down) based on recipe serving vs user need
+- [x] Calculate new amount of ingredients per recipe (for those that need to be multiplied)
 - [x] Add loading icon while scraper is working 
 - [x] Refresh list of recipes after multiple submits
+- [ ] Change console logging to actual logging (info/debug/warn)
+- [ ] Look at how to do user monitoring properly
+- [ ] Improve scanner logic. Is there a better way to get info without using xpath to prevent breaking when BBC changes website?
+- [ ] Show an error when scraper errors
+- [ ] Show 'wrong url' message if incorrect url 
