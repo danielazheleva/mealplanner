@@ -10,7 +10,7 @@ app.get('/api/recipe', (req, res) => {
     return ('Hello World!');
 })
 
-app.post('http://localhost:3000/api/recipe', async (req, res) => {
+app.post('http://loc/api/recipe', async (req, res) => {
     gcpHelers.createUserHitMetric('recipe_api');
     console.log(req.body);
 
