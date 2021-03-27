@@ -16,21 +16,25 @@ app.use(function (req, res, next) {
 // input: list of all recipes, containing all information
 function formatRecipe(allRecipes) {
   const wantedKeys = ['recipeName', 'servings', 'formattedMacros']
-  const output = [];
+  const output = [];  
 
-  allRecipes.forEach(recipe => {
+  allRecipes.forEach(map => {
+    recipe = map.scrapedRecipeDetail;
+    multiplyer = map.amount;
+
     const filtered = Object.keys(recipe).filter(key => wantedKeys.includes(key))
       .reduce((obj, key) => {
         obj[key] = recipe[key];
         return obj;
       }, {});
+    filtered.servings = filtered.servings * multiplyer;
     output.push(filtered)
   })
   return output;
 }
 
 // input: list of all recipes, containing all information
-function reduceShoppingList(allRecipes) {
+function formatIngredients(allRecipes, multiplyer) {
   // map list into map of ingredient: amount
   const mapOfIngs = allRecipes.map(ingredient => {
     if (ingredient.includes(",")) ingredient = (ingredient.split(',')[0]).trim();
@@ -62,23 +66,23 @@ function reduceShoppingList(allRecipes) {
 
     return ({
       key: ingredient.trim(),
-      value: amount,
+      value: (amount*multiplyer),
       unit: amountWithUnit.split(" ")[1]
     })
   });
 
   return mapOfIngs;
-
-  // if 2 ingredients have the same word, then combine
-
 }
 
 function combineDuplicates(arrayOfObjects) {
+  console.log("==============")
+  console.log(arrayOfObjects);
+  console.log("==============")
 
   var combined = [];
 
   arrayOfObjects.forEach(obj => {
-
+    console.log(obj)
     if (combined.some(combinedObj => combinedObj.key == obj.key)) {
       combined.forEach(finalIng => {
         if ((finalIng.key == obj.key) && (finalIng.unit == obj.unit)) {
@@ -94,13 +98,20 @@ function combineDuplicates(arrayOfObjects) {
 }
 
 function getShoppingList(allRecipes) {
-  const allIngredientsList = allRecipes.map(function (rec) {
-    return rec['ingredients'];
-  })
-    .reduce((r, arr) => r.concat(arr), []);
 
-  const allList = reduceShoppingList(allIngredientsList);
-  return combineDuplicates(allList);
+  var rawShoppingList = [];
+
+  allRecipes.forEach((recipe) => {
+    const recipeIngredients = recipe.scrapedRecipeDetail.ingredients;
+    const multiplyer = recipe.amount;
+
+    const formattedIngredientsForRecipe = formatIngredients(recipeIngredients, multiplyer);
+    formattedIngredientsForRecipe.forEach((ing) => {
+      rawShoppingList.push(ing);
+    })
+  })
+
+  return combineDuplicates(rawShoppingList);
 }
 
 async function scrapeRecipe(url) {
