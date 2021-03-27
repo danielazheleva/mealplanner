@@ -21,8 +21,8 @@
 - [ ] Look at DNS name
 - [x] Set up monitoring on GCP
 - [ ] Work out how to add tests
-- [ ] Calculate if recipe needs to be multiplied (up or down) based on recipe serving vs user need
-- [ ] Calculate new amount of ingredients per recipe (for those that need to be multiplied)
+- [x] Calculate if recipe needs to be multiplied (up or down) based on recipe serving vs user need
+- [x] Calculate new amount of ingredients per recipe (for those that need to be multiplied)
 - [x] Add loading icon while scraper is working 
 - [x] Refresh list of recipes after multiple submits
 - [ ] Change console logging to actual logging (info/debug/warn)

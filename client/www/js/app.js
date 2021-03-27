@@ -256,6 +256,7 @@ function createInputBox() {
   quantityInput.id = "quantity" + nextInputValue;
   quantityInput.setAttribute("type", "text");
   quantityInput.setAttribute("placeholder", "2");
+  quantityInput.setAttribute("value", 1);
 
   row.appendChild(urlInput);
   row.appendChild(quantityInput);
