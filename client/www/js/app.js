@@ -12,17 +12,18 @@ async function triggerMonitorCount() {
 async function submitMeals() {
   // show loader
   document.getElementById("spinner").style.display = 'block';
-
-  // clear existing details
   clearExistingDetails();
 
-  let urls = [];
+  let recipeAndQuantity = [];
+  const recipeInputs = document.getElementsByClassName("recipe-input");
+  const recipeQuantity = document.getElementsByClassName("recipe-quantity");
 
-  const recipeInputs = document.getElementsByClassName("recipe-input")
-
-  for (let recipe of recipeInputs) {
-    urls.push({ url: recipe.value })
-  };
+  for(let i = 0; i < recipeInputs.length; i++) {
+    recipeAndQuantity.push({
+      url: recipeInputs[i].value,
+      amount: recipeQuantity[i].value
+    });
+  }
 
   // Get scraped recipe data from recipe using server api
   jsonS = fetch("/api/recipe", {
@@ -30,7 +31,7 @@ async function submitMeals() {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ urls }),
+    body: JSON.stringify({ urls: recipeAndQuantity }),
   })
     .then((response) => response.json())
     .then((response) => {
@@ -241,13 +242,24 @@ function createInputBox() {
   const nextInputValue = inputsClass[0].children.length + 1;
   const row = document.createElement("div")
   row.classList.add("row");
-  const input = document.createElement("input")
-  input.classList.add("recipe-input");
-  input.id = "recipe" + nextInputValue;
-  input.setAttribute("type", "text");
-  input.setAttribute("placeholder", "Input BBC GoodFood Recipe URL here");
+  
+  const urlInput = document.createElement("input")
+  urlInput.classList.add("recipe-input");
+  urlInput.classList.add("col-sm-10");
+  urlInput.id = "recipe" + nextInputValue;
+  urlInput.setAttribute("type", "text");
+  urlInput.setAttribute("placeholder", "Input BBC GoodFood Recipe URL here");
 
-  row.appendChild(input);
+  const quantityInput = document.createElement("input")
+  quantityInput.classList.add("recipe-quantity");
+  quantityInput.classList.add("col-sm-2");
+  quantityInput.id = "quantity" + nextInputValue;
+  quantityInput.setAttribute("type", "text");
+  quantityInput.setAttribute("placeholder", "2");
+  quantityInput.setAttribute("value", 1);
+
+  row.appendChild(urlInput);
+  row.appendChild(quantityInput);
   inputsId.appendChild(row);
 }
 
