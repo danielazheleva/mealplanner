@@ -1,5 +1,4 @@
 const express = require('express');
-const { route, routes } = require('../../config/express');
 const bbcRoutes = require('./bbc')
 const monitorRoutes = require('./monitor')
 
