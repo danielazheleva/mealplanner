@@ -5,12 +5,21 @@ async function combineRecipes(urls) {
     // This scrapes each recipe in the list and combines the info in one big list 
     for (let url of urls) {
         if (url.url != null && url.url != "") {
-            const scrapedRecipe = await scrapeRecipe(url.url);
-            const scraped = ({
-                scrapedRecipeDetail: scrapedRecipe,
-                amount: url.amount
-            })
-            allScrapedRecipes.push(scraped);
+            if(!url.url.includes("bbcgoodfood.com/recipes")){
+                throw "Recipe is not from BBC GoodFood"
+            }
+            try {
+                const scrapedRecipe = await scrapeRecipe(url.url);
+                const scraped = ({
+                    scrapedRecipeDetail: scrapedRecipe,
+                    amount: url.amount
+                })
+                allScrapedRecipes.push(scraped);
+            } catch(error) {
+                throw error;
+            }
+            
+            
         } else {
             console.log("url empty");
         }

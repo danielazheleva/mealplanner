@@ -18,7 +18,7 @@ async function submitMeals() {
   const recipeInputs = document.getElementsByClassName("recipe-input");
   const recipeQuantity = document.getElementsByClassName("recipe-quantity");
 
-  for(let i = 0; i < recipeInputs.length; i++) {
+  for (let i = 0; i < recipeInputs.length; i++) {
     recipeAndQuantity.push({
       url: recipeInputs[i].value,
       amount: recipeQuantity[i].value
@@ -33,11 +33,18 @@ async function submitMeals() {
     },
     body: JSON.stringify({ urls: recipeAndQuantity }),
   })
-    .then((response) => response.json())
-    .then((response) => {
-      displayRecipes(response.recipes);
-      showShoppingList(response.ingredients);
-      document.getElementById("spinner").style.display = 'none';
+    .then(async function (response) {
+      if (response.status === 400) {
+        document.getElementById("spinner").style.display = 'none';
+        console.log("Not a BBC GoodFood recipe");
+      } else if (response.status === 200) {
+        responseJson = await response.json()
+        displayRecipes(responseJson.recipes);
+        showShoppingList(responseJson.ingredients);
+        document.getElementById("spinner").style.display = 'none';
+      } else {
+        console.log("other status than 400 or 200")
+      }
     });
 }
 
@@ -242,7 +249,7 @@ function createInputBox() {
   const nextInputValue = inputsClass[0].children.length + 1;
   const row = document.createElement("div")
   row.classList.add("row");
-  
+
   const urlInput = document.createElement("input")
   urlInput.classList.add("recipe-input");
   urlInput.classList.add("col-sm-10");
