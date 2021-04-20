@@ -2,40 +2,43 @@ const monitoring = require('@google-cloud/monitoring');
 
 // Creates a Stackdriver client
 const client = new monitoring.MetricServiceClient();
-
 const projectId = 'meal-planner-306012';
 
 const request = {
-  name: client.projectPath(projectId),
-  metricDescriptor: {
-    description: 'User interaction with API',
-    displayName: 'User Interactions',
-    type: 'custom.googleapis.com/interaction/user_hit',
-    metricKind: 'GAUGE',
-    valueType: 'INT64',
-    labels: [
-      {
-        key: 'interaction_type',
-        valueType: 'STRING',
-        description: 'Location of interaction',
-      },
-    ],
-  },
+    name: client.projectPath(projectId),
+    metricDescriptor: {
+        description: 'User interaction with API',
+        displayName: 'User Interactions',
+        type: 'custom.googleapis.com/interaction/user_hit',
+        metricKind: 'GAUGE',
+        valueType: 'INT64',
+        labels: [
+            {
+                key: 'interaction_type',
+                valueType: 'STRING',
+                description: 'Location of interaction',
+            },
+        ],
+    },
 };
 
-// Creates a custom metric descriptor
-const [descriptor] = await client.createMetricDescriptor(request);
-console.log('Created custom Metric:\n');
-console.log(`Name: ${descriptor.displayName}`);
-console.log(`Description: ${descriptor.description}`);
-console.log(`Type: ${descriptor.type}`);
-console.log(`Kind: ${descriptor.metricKind}`);
-console.log(`Value Type: ${descriptor.valueType}`);
-console.log(`Unit: ${descriptor.unit}`);
-console.log('Labels:');
-descriptor.labels.forEach(label => {
-  console.log(`  ${label.key} (${label.valueType}) - ${label.description}`);
-});
+async function createDescriptor(request) {
+    // Creates a custom metric descriptor
+    const [descriptor] = await client.createMetricDescriptor(request);
+    console.log('Created custom Metric:\n');
+    console.log(`Name: ${descriptor.displayName}`);
+    console.log(`Description: ${descriptor.description}`);
+    console.log(`Type: ${descriptor.type}`);
+    console.log(`Kind: ${descriptor.metricKind}`);
+    console.log(`Value Type: ${descriptor.valueType}`);
+    console.log(`Unit: ${descriptor.unit}`);
+    console.log('Labels:');
+    descriptor.labels.forEach(label => {
+        console.log(`  ${label.key} (${label.valueType}) - ${label.description}`);
+    });
+}
+
+createDescriptor(request);
 
 async function createUserHitMetric(userHitLocation) {
 

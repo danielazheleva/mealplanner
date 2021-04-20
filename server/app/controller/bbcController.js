@@ -3,7 +3,7 @@ const recipeService = require('../services/recipeService');
 
 function get(req, res) {
     const { limit = 50, skip = 0 } = req.query;
-    console.log("Hello World!!")
+    gcpHelpers.createUserHitMetric('hello_world');
     return res.json("Hello World!!");
 }
 
