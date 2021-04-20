@@ -2,8 +2,6 @@ const monitoring = require('@google-cloud/monitoring');
 
 // Creates a Stackdriver client
 const client = new monitoring.MetricServiceClient();
-// Imports the Google Cloud client library
-const monitoring = require('@google-cloud/monitoring');
 
 const projectId = 'meal-planner-306012';
 
