@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
-import Test from "./components/Test";  // new
+//import Test from "./components/Test";  // new
+import Homepage from "./components/Homepage"
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          <Test />
+          <Homepage />
         </p>
         <a
           className="App-link"
