@@ -1,2 +1,10 @@
 package-lock.json
 node_modules
+
+backend/.idea
+backend/venv
+backend/app/__pycache__
+backend/app/api/__pycache__
+backend/app/core/__pycache__
+
+.idea
