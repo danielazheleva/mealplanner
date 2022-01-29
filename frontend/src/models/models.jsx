@@ -9,7 +9,7 @@ class Nutrients {
 class ScrapedRecipe {
     url: string
     title: string
-    macrosPerServing: Nutrients | null
+    nutrition: Nutrients | null
     servings: number
 }
 
