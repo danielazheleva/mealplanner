@@ -1,26 +1,48 @@
 import React from "react"
 import InputRecipe from "./InputRecipe"
+import ScrapedRecipe from "../models/models"
 import { v4 as uuidv4 } from "uuid";
 
-class Homepage extends React.Component {
+interface HomepageState {
+    recipes: string[];
+    scrapedRecipes: ScrapedRecipe[];
+}
+class Homepage extends React.Component<any, HomepageState> {
 
     state = {
-        recipes: []
+        recipes: [],
+        scrapedRecipes: []
     }
 
     componentDidUpdate(prevProps, prevState) {
         console.log(this.state)         
+        if(prevState.recipes !== this.state.recipes) {
+            console.log("Recipes have been updated - triggering scraping")
+            this.scrapeRecipe(this.state.recipes)
+          }    
     }
 
-
+    /**
+    * Funciton to add new recipe URLs input into the state
+    */
     addRecipe = url => {
-        const newRecipe = {
-            id: uuidv4(),  
-            url: url,
-        };
         this.setState ({
-            recipes: [...this.state.recipes, newRecipe]
+            recipes: [...this.state.recipes, url]
         })
+    }
+
+    /**
+    * Funciton to scrape recipes which are in the state
+    */
+    scrapeRecipe = urls => {
+        urls.forEach(url => {
+            console.log(`scraping url ${url}`)
+            // TODO call backend API for scraping
+            let recipe = new ScrapedRecipe(url, 'title', null, 2)
+            this.setState({
+                scrapedRecipes: [...this.state.scrapedRecipes, recipe]
+            })
+        });
     }
 
     render() {
