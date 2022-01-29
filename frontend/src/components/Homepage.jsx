@@ -16,11 +16,11 @@ class Homepage extends React.Component<any, HomepageState> {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        console.log(this.state)         
         if(prevState.recipes !== this.state.recipes) {
             console.log("Recipes have been updated - triggering scraping")
             this.scrapeRecipe(this.state.recipes)
-          }    
+          }   
+        console.log(this.state)
     }
 
     /**
@@ -40,19 +40,23 @@ class Homepage extends React.Component<any, HomepageState> {
             const detail = { url: url}
             console.log(`scraping url ${url}`)
             axios.post(`/api/v1/recipe`, detail)
-                .then(res => res.json())
+                .then(res => res.data)
                 .then(
                     (result) => {
-                        console.log("got a result, yay")
-                        console.log(result)
+                        const recipe = {
+                            url: url,
+                            title: result.name, 
+                            nutrition: result.nutrition, 
+                            servings: result.recipeYield
+                        }
+                        this.setState({
+                            scrapedRecipes: [...this.state.scrapedRecipes, recipe]
+                        })
                     }
                 )
-            // TODO call backend API for scraping
 
-            let recipe = new ScrapedRecipe(url, 'title', null, 2)
-            this.setState({
-                scrapedRecipes: [...this.state.scrapedRecipes, recipe]
-            })
+            
+            
         });
     }
 

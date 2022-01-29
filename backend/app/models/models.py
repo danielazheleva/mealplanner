@@ -1,20 +1,25 @@
 import uuid
+from typing import List, Dict
+
+from pydantic import BaseModel
 
 
-class FatDetails:
-    sugar: int
+class Nutrition:
+    calories: str
+    fat: str
+    saturatedFat: str
+    carbohydrate: str
+    sugar: str
+    fiber: str
+    protein: str
+    sodium: str
 
 
-class MacroNutrients:
-    cals: int
-    proteins: int
-    carbs: int
-    fats: FatDetails
-
-
-class ScrapedRecipe:
-    id: uuid
+class ScrapedRecipe(BaseModel):
+    id: str
     url: str
-    serves: int
-    macronutrients: MacroNutrients
+    name: str
+    nutrition: Dict
+    recipeYield: str
+    ingredients: List[str]
 
