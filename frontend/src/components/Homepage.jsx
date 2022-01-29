@@ -1,7 +1,8 @@
 import React from "react"
 import InputRecipe from "./InputRecipe"
 import ScrapedRecipe from "../models/models"
-import { v4 as uuidv4 } from "uuid";
+
+const axios = require('axios').default;
 
 interface HomepageState {
     recipes: string[];
@@ -36,8 +37,18 @@ class Homepage extends React.Component<any, HomepageState> {
     */
     scrapeRecipe = urls => {
         urls.forEach(url => {
+            const detail = { url: url}
             console.log(`scraping url ${url}`)
+            axios.post(`/api/v1/recipe`, detail)
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        console.log("got a result, yay")
+                        console.log(result)
+                    }
+                )
             // TODO call backend API for scraping
+
             let recipe = new ScrapedRecipe(url, 'title', null, 2)
             this.setState({
                 scrapedRecipes: [...this.state.scrapedRecipes, recipe]
