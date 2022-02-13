@@ -19,7 +19,6 @@ const InputRecipe = (props) => {
         } else {
             alert("Input recipe")
         }
-        
     }
 
     return (

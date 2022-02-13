@@ -14,7 +14,7 @@ const RecipeCard = (props) => {
                     Object.keys(props.scrapedRecipeDetails.nutrition).map((key, i) => {
                         return (
                             <Typography color="text.secondary">
-                                {key}: {props.scrapedRecipeDetails.nutrition[key]}
+                                {props.scrapedRecipeDetails.nutrition[key]}
                             </Typography>
                         )
                     })

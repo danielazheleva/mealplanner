@@ -29,7 +29,7 @@ class Homepage extends React.Component<any, HomepageState> {
     */
     addRecipe = url => {
         this.setState ({
-            recipes: [...this.state.recipes, url]
+            recipes: [url]
         })
     }
 
@@ -51,7 +51,7 @@ class Homepage extends React.Component<any, HomepageState> {
                             servings: result.recipeYield
                         }
                         this.setState({
-                            scrapedRecipes: [...this.state.scrapedRecipes, recipe]
+                            scrapedRecipes: [recipe]
                         })
                     }
                 )
