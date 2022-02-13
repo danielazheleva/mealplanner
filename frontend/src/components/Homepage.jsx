@@ -2,6 +2,7 @@ import React from "react"
 import InputRecipe from "./InputRecipe"
 import ScrapedRecipe from "../models/models"
 import RecipeCard from "./RecipeCard";
+import Grid from '@mui/material/Grid';
 
 const axios = require('axios').default;
 
@@ -64,15 +65,26 @@ class Homepage extends React.Component<any, HomepageState> {
                 <div className="inner">
                     <InputRecipe addRecipeToProps={this.addRecipe}></InputRecipe>
                 </div>
-                <div className="recipeHolder">
+                <div className="inner">   
                 {
-                    this.state.scrapedRecipes.map(function(recipe, i){
-                        const cards = []
-                        for(var j=0; j<recipe.servings; j++){
-                            cards.push(<RecipeCard scrapedRecipeDetails={recipe} key={j}/>)
-                        }
-                        return cards
-                    })
+                    (this.state.scrapedRecipes) ? 
+                    (
+                        <Grid container style={{padding: "50px"}} spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                            
+                                {
+                                    this.state.scrapedRecipes.map(function(recipe, i){
+                                        const cards = []
+                                        for(var j=0; j<recipe.servings; j++){
+                                            cards.push(
+                                                <Grid item xs={2}>
+                                                    <RecipeCard scrapedRecipeDetails={recipe} key={j}/>
+                                                </Grid>
+                                                )
+                                        }
+                                        return cards
+                                    })
+                                }
+                        </Grid>) : null
                 }
                 </div>
             </div>
