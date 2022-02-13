@@ -1,22 +1,19 @@
-import React, { Component } from "react"
+import React from "react"
 
-class InputRecipe extends Component {
+const InputRecipe = (props) => {
+    const [url, setUrls] = React.useState({url: ""});
 
-    state = {
-        url: ""
-    }
-
-    onChange = e => {
-        this.setState({
+    function onChange(e) {
+        setUrls({
             [e.target.name]: e.target.value,
         })
     }
 
-    handleSubmit = e => {
+    function handleSubmit(e) {
         e.preventDefault()
-        if(this.state.url.trim()) {
-            this.props.addRecipeToProps(this.state.url);
-            this.setState({
+        if(url.url.trim()) {
+            props.addRecipeToProps(url.url);
+            setUrls({
                 url: ""
             })
         } else {
@@ -25,21 +22,19 @@ class InputRecipe extends Component {
         
     }
 
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit} className="form-container">
-                <input
-                    type="text"
-                    className="input-text"
-                    placeholder="Add recipe..."
-                    value={this.state.url}
-                    name="url"          
-                    onChange={this.onChange}
-                />
-                <button className="input-submit">Submit</button>
-            </form>
-        )
-    }
+    return (
+        <form onSubmit={handleSubmit} className="form-container">
+            <input
+                type="text"
+                className="input-text"
+                placeholder="Add recipe..."
+                value={url.url}
+                name="url"          
+                onChange={onChange}
+            />
+            <button className="input-submit">Submit</button>
+        </form>
+    )
 }
 
 export default InputRecipe
