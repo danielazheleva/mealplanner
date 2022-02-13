@@ -1,6 +1,7 @@
 import React from "react"
 import InputRecipe from "./InputRecipe"
 import ScrapedRecipe from "../models/models"
+import RecipeCard from "./RecipeCard";
 
 const axios = require('axios').default;
 
@@ -54,9 +55,6 @@ class Homepage extends React.Component<any, HomepageState> {
                         })
                     }
                 )
-
-            
-            
         });
     }
 
@@ -65,6 +63,13 @@ class Homepage extends React.Component<any, HomepageState> {
             <div className="container">
                 <div className="inner">
                     <InputRecipe addRecipeToProps={this.addRecipe}></InputRecipe>
+                </div>
+                <div className="recipeHolder">
+                {
+                    this.state.scrapedRecipes.map(function(recipe, i){
+                        return <RecipeCard scrapedRecipeDetails={recipe} key={i}/>
+                    })
+                }
                 </div>
             </div>
         )
