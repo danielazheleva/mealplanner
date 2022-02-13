@@ -1,4 +1,5 @@
 import uuid
+import re
 from typing import Dict
 
 from fastapi import APIRouter
@@ -18,10 +19,11 @@ def hello():
 def scrape_recipe(detail: Dict):
     print(f"scraping {detail['url']}")
     scraper = scrape_me(detail['url'])
+    needle = '\d+'
     recipe = ScrapedRecipe(
         id=uuid.uuid4().hex,
         url=detail['url'],
-        recipeYield=scraper.yields(),
+        recipeYield=int(re.match(needle, scraper.yields()).group(0)),
         name=scraper.title(),
         nutrition=scraper.nutrients(),
         ingredients=scraper.ingredients()

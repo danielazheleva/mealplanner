@@ -67,7 +67,11 @@ class Homepage extends React.Component<any, HomepageState> {
                 <div className="recipeHolder">
                 {
                     this.state.scrapedRecipes.map(function(recipe, i){
-                        return <RecipeCard scrapedRecipeDetails={recipe} key={i}/>
+                        const cards = []
+                        for(var j=0; j<recipe.servings; j++){
+                            cards.push(<RecipeCard scrapedRecipeDetails={recipe} key={j}/>)
+                        }
+                        return cards
                     })
                 }
                 </div>

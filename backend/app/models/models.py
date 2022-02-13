@@ -20,6 +20,6 @@ class ScrapedRecipe(BaseModel):
     url: str
     name: str
     nutrition: Dict
-    recipeYield: str
+    recipeYield: int
     ingredients: List[str]
 
