@@ -1,6 +1,13 @@
-# mealplanner
+# Meal Planner
 
-A website which allows users to input a list of BBC GoodFood recipes and outputs a shopping list of combined ingredients. Also allows users to plan a week worth of meals (breakfast, lunch, dinner, snacks) in a drag-and-drop table and shows combined daily macros.
+A website which allows users to input a recipes and outputs a shopping list of combined ingredients. 
+
+### Getting started
+
+1. Run the backend through the `main.py` file
+2. Run the frontend `npm start`
+
+# Old verison
 
 ![](./docs/v1-gif.gif)
 ## Workflow
