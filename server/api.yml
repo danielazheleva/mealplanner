@@ -1,3 +1,0 @@
-runtime: nodejs14
-service: api
-instance_class: F4
