@@ -25,7 +25,6 @@ app.add_middleware(
 app.include_router(api_router, prefix=settings.API_V1_STR)
 app.include_router(root_router)
 
-# 5
 if __name__ == "__main__":
     # Use this for debugging purposes only
     import uvicorn

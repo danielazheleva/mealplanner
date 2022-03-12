@@ -1,11 +1,10 @@
-import uuid
-import re
-from typing import Dict
+from typing import Dict, List
 
 from fastapi import APIRouter
-from recipe_scrapers import scrape_me
 
-from app.models.models import ScrapedRecipe
+from app.models import ScrapedRecipe
+from app.schemas import ScrapedResult, ScrapingRequest
+from app.service import scrape_recipe
 
 router = APIRouter()
 
@@ -15,18 +14,16 @@ def hello():
     return {"message": "Hello World"}
 
 
-@router.post("/", response_model=ScrapedRecipe, status_code=200)
-def scrape_recipe(detail: Dict):
-    print(f"scraping {detail['url']}")
-    scraper = scrape_me(detail['url'])
-    needle = '\d+'
-    recipe = ScrapedRecipe(
-        id=uuid.uuid4().hex,
-        url=detail['url'],
-        recipeYield=int(re.match(needle, scraper.yields()).group(0)),
-        name=scraper.title(),
-        nutrition=scraper.nutrients(),
-        ingredients=scraper.ingredients()
+@router.post("/", response_model=ScrapedResult, status_code=200)
+def scrape(detail: ScrapingRequest):
+    scraped_recipes: List[ScrapedRecipe] = []
+
+    for url in detail.urls:
+        recipe: ScrapedRecipe = scrape_recipe(url)
+        scraped_recipes.append(recipe)
+
+    return ScrapedResult(
+        scraped_recipes=scraped_recipes,
+        shopping_list=[]
     )
 
-    return recipe
