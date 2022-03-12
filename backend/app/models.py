@@ -1,4 +1,3 @@
-import uuid
 from typing import List, Dict
 
 from pydantic import BaseModel
@@ -22,4 +21,3 @@ class ScrapedRecipe(BaseModel):
     nutrition: Dict
     recipeYield: int
     ingredients: List[str]
-
