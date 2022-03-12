@@ -11,6 +11,7 @@ class ScrapedRecipe {
     title: string
     nutrition: Nutrients | null
     servings: number
+    ingredients: []
 }
 
 export default ScrapedRecipe

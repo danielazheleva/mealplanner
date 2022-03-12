@@ -1,37 +1,54 @@
 import React from "react"
 
 const InputRecipe = (props) => {
-    const [url, setUrls] = React.useState({url: ""});
+    const [urls, setUrls] = React.useState({});
 
     function onChange(e) {
         setUrls({
+            ...urls,
             [e.target.name]: e.target.value,
         })
     }
 
     function handleSubmit(e) {
         e.preventDefault()
-        if(url.url.trim()) {
-            props.addRecipeToProps(url.url);
+        if(urls) {
+            props.addRecipeToProps(urls);
             setUrls({
-                url: ""
+                urls: []
             })
         } else {
             alert("Input recipe")
         }
     }
-
+    
     return (
         <form onSubmit={handleSubmit} className="form-container">
-            <input
-                type="text"
-                className="input-text"
-                placeholder="Add recipe..."
-                value={url.url}
-                name="url"          
-                onChange={onChange}
-            />
-            <button className="input-submit">Submit</button>
+            <div className='container'>
+                <div className='row'>
+                    <input
+                        type="text"
+                        className="input-text"
+                        placeholder="Add recipe..."
+                        value={urls.url1}
+                        name="url1"          
+                        onChange={onChange}
+                        style={{width: "50%", margin: "0.1%"}}
+                    />
+                </div>
+                <div className='row'>
+                    <input
+                        type="text"
+                        className="input-text"
+                        placeholder="Add recipe..."
+                        value={urls.url2}
+                        name="url2"          
+                        onChange={onChange}
+                        style={{width: "50%", margin: "0.1%"}}
+                    />
+                </div>
+            </div>
+            <button type="submit" className="input-submit">Submit</button>
         </form>
     )
 }

@@ -1,43 +1,41 @@
-import React from "react"
+import React, { useEffect, useRef } from "react";
 import InputRecipe from "./InputRecipe"
 import ScrapedRecipe from "../models/models"
+import ShoppingList from "./ShoppingList"
 import RecipeCard from "./RecipeCard";
 import Grid from '@mui/material/Grid';
 
 const axios = require('axios').default;
 
-interface HomepageState {
-    recipes: string[];
-    scrapedRecipes: ScrapedRecipe[];
-}
-class Homepage extends React.Component<any, HomepageState> {
+const Homepage = (props) => {
+    const [urlsToScrape, setUrl] = React.useState([]);
+    const [scrapedRecipes, setScraped] = React.useState([]);
+    const prevAmount = useRef({ urlsToScrape }).current;
 
-    state = {
-        recipes: [],
-        scrapedRecipes: []
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if(prevState.recipes !== this.state.recipes) {
-            console.log("Recipes have been updated - triggering scraping")
-            this.scrapeRecipe(this.state.recipes)
+    useEffect(() => {
+        if(prevAmount.urlsToScrape !== urlsToScrape) {
+            console.log("URLs have been updated - triggering scraping")
+            scrapeRecipe(urlsToScrape)
           }   
-        console.log(this.state)
-    }
+        return () => { 
+            prevAmount.scrapedRecipes = scrapedRecipes;
+        };
+    }, [urlsToScrape]);
 
     /**
-    * Funciton to add new recipe URLs input into the state
+    * Adds all urls to the urlsToScrape state variable.
     */
-    addRecipe = url => {
-        this.setState ({
-            recipes: [url]
+    function addRecipe(url) {
+        Object.entries(url).map(([key,value],i) => {
+            setUrl(urlsToScrape => [...urlsToScrape, value])
         })
     }
 
     /**
     * Funciton to scrape recipes which are in the state
     */
-    scrapeRecipe = urls => {
+    function scrapeRecipe(urls) {
+        console.log(`Urls to scrape are: ${urlsToScrape}`)
         urls.forEach(url => {
             const detail = { url: url}
             console.log(`scraping url ${url}`)
@@ -49,30 +47,28 @@ class Homepage extends React.Component<any, HomepageState> {
                             url: url,
                             title: result.name, 
                             nutrition: result.nutrition, 
-                            servings: result.recipeYield
+                            servings: result.recipeYield,
+                            ingredients: result.ingredients
                         }
-                        this.setState({
-                            scrapedRecipes: [recipe]
-                        })
+                        setScraped(scrapedRecipes => [...scrapedRecipes, recipe])
                     }
                 )
         });
     }
 
-    render() {
         return (
             <div className="container">
                 <div className="inner">
-                    <InputRecipe addRecipeToProps={this.addRecipe}></InputRecipe>
+                    <InputRecipe addRecipeToProps={addRecipe}></InputRecipe>
                 </div>
                 <div className="inner">   
                 {
-                    (this.state.scrapedRecipes) ? 
+                    (scrapedRecipes) ? 
                     (
                         <Grid container style={{padding: "50px"}} spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                             
                                 {
-                                    this.state.scrapedRecipes.map(function(recipe, i){
+                                    scrapedRecipes.map(function(recipe, i){
                                         const cards = []
                                         for(var j=0; j<recipe.servings; j++){
                                             cards.push(
@@ -87,9 +83,16 @@ class Homepage extends React.Component<any, HomepageState> {
                         </Grid>) : null
                 }
                 </div>
+                <div className="inner">
+                    {
+                        (scrapedRecipes) ? 
+                        (
+                            <ShoppingList recipes={scrapedRecipes}></ShoppingList>
+                        ) : null
+                    }
+                </div>
             </div>
         )
-    }
 }
 
 export default Homepage
