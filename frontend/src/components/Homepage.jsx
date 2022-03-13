@@ -10,6 +10,7 @@ const axios = require('axios').default;
 const Homepage = (props) => {
     const [urlsToScrape, setUrl] = React.useState([]);
     const [scrapedRecipes, setScraped] = React.useState([]);
+    const [shoppingList, setShoppingList] = React.useState([]);
     const prevAmount = useRef({ urlsToScrape }).current;
 
     useEffect(() => {
@@ -36,24 +37,25 @@ const Homepage = (props) => {
     */
     function scrapeRecipe(urls) {
         console.log(`Urls to scrape are: ${urlsToScrape}`)
-        urls.forEach(url => {
-            const detail = { url: url}
-            console.log(`scraping url ${url}`)
-            axios.post(`/api/v1/recipe`, detail)
-                .then(res => res.data)
-                .then(
-                    (result) => {
+        const detail = { urls: urls}
+        console.log(`scraping url ${urls}`)
+        axios.post(`/api/v1/recipe`, detail)
+            .then(res => res.data)
+            .then(
+                (result) => {
+                    result['scraped_recipes'].forEach(r => {
                         const recipe = {
-                            url: url,
-                            title: result.name, 
-                            nutrition: result.nutrition, 
-                            servings: result.recipeYield,
-                            ingredients: result.ingredients
+                            url: r.url,
+                            title: r.name, 
+                            nutrition: r.nutrition, 
+                            servings: r.recipeYield,
+                            ingredients: r.ingredients
                         }
                         setScraped(scrapedRecipes => [...scrapedRecipes, recipe])
-                    }
-                )
-        });
+                        setShoppingList(result['shopping_list'])
+                    });
+                }
+            )
     }
 
         return (
@@ -72,8 +74,8 @@ const Homepage = (props) => {
                                         const cards = []
                                         for(var j=0; j<recipe.servings; j++){
                                             cards.push(
-                                                <Grid item xs={2}>
-                                                    <RecipeCard scrapedRecipeDetails={recipe} key={j}/>
+                                                <Grid key={`${i}-${j}`} item xs={2}>
+                                                    <RecipeCard scrapedRecipeDetails={recipe} key={`${i}-${j}`}/>
                                                 </Grid>
                                                 )
                                         }
@@ -87,7 +89,7 @@ const Homepage = (props) => {
                     {
                         (scrapedRecipes) ? 
                         (
-                            <ShoppingList recipes={scrapedRecipes}></ShoppingList>
+                            <ShoppingList shoppingList={shoppingList}></ShoppingList>
                         ) : null
                     }
                 </div>

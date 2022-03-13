@@ -3,7 +3,13 @@
 const ShoppingList = (props) => {
     return (
         <div>
-            {console.log(props.recipes)}
+            <ul>
+                {
+                    props.shoppingList.map(ing => {
+                        return (<li key={ing}>{ing}</li>)
+                    })
+                }
+            </ul>
         </div>
     )
 }

@@ -30,7 +30,7 @@ const InputRecipe = (props) => {
                         type="text"
                         className="input-text"
                         placeholder="Add recipe..."
-                        value={urls.url1}
+                        value={urls.url1 || ''} 
                         name="url1"          
                         onChange={onChange}
                         style={{width: "50%", margin: "0.1%"}}
@@ -41,7 +41,7 @@ const InputRecipe = (props) => {
                         type="text"
                         className="input-text"
                         placeholder="Add recipe..."
-                        value={urls.url2}
+                        value={urls.url2 || ''}
                         name="url2"          
                         onChange={onChange}
                         style={{width: "50%", margin: "0.1%"}}
