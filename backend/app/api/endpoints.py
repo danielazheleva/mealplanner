@@ -22,8 +22,12 @@ def scrape(detail: ScrapingRequest):
         recipe: ScrapedRecipe = scrape_recipe(url)
         scraped_recipes.append(recipe)
 
+    shopping_list: List[str] = [
+        ing for recipe in scraped_recipes for ing in recipe.ingredients
+    ]
+
     return ScrapedResult(
         scraped_recipes=scraped_recipes,
-        shopping_list=[]
+        shopping_list=shopping_list
     )
 
