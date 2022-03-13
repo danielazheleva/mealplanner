@@ -14,9 +14,7 @@ const InputRecipe = (props) => {
         e.preventDefault()
         if(urls) {
             props.addRecipeToProps(urls);
-            setUrls({
-                urls: []
-            })
+            setUrls({})
         } else {
             alert("Input recipe")
         }
